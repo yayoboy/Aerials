@@ -72,6 +72,5 @@ class PatchParams(BaseModel):
     substrate_height_mm: float = 1.6
 
 class SimulationRequest(BaseModel):
-    antenna_type:   str
     antenna_params: Dict[str, Any]
     conductor:      ConductorParams = ConductorParams()

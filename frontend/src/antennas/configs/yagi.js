@@ -11,5 +11,6 @@ export default {
     { name: 'driven_length_mm',    label: 'Lunghezza dipolo (mm)',   type: 'number', min: 1,   step: 1 },
     { name: 'reflector_length_mm', label: 'Lunghezza riflettore (mm)', type: 'number', min: 1, step: 1 },
     { name: 'element_spacing_mm',  label: 'Spaziatura elementi (mm)', type: 'number', min: 1,  step: 1 },
+    { name: 'director_lengths_mm', label: 'Lunghezze direttori (mm, virgola)', type: 'text' },
   ],
 };

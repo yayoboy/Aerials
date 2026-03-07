@@ -27,12 +27,18 @@ export default function AntennaForm({ antennaType, params, onChange }) {
               min={field.min}
               max={field.max}
               step={field.step}
-              value={params[field.name] ?? ''}
-              onChange={e => set(field.name,
-                field.type === 'number'
-                  ? (e.target.value === '' ? '' : parseFloat(e.target.value))
-                  : e.target.value
-              )}
+              value={Array.isArray(params[field.name]) ? params[field.name].join(', ') : (params[field.name] ?? '')}
+              onChange={e => {
+                if (field.type === 'number') {
+                  set(field.name, e.target.value === '' ? '' : parseFloat(e.target.value));
+                } else if (field.type === 'text' && field.name === 'director_lengths_mm') {
+                  // Parse comma-separated numbers to array
+                  const arr = e.target.value.split(',').map(s => parseFloat(s.trim())).filter(n => !isNaN(n));
+                  set(field.name, arr.length > 0 ? arr : [980]);
+                } else {
+                  set(field.name, e.target.value);
+                }
+              }}
             />
           )}
         </div>

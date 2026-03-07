@@ -79,6 +79,13 @@ export default function Antenna3DView({ antennaType, params, conductor }) {
     if (!scene) return;
 
     if (antennaRef.current) {
+      antennaRef.current.traverse((obj) => {
+        if (obj.geometry) obj.geometry.dispose();
+        if (obj.material) {
+          if (Array.isArray(obj.material)) obj.material.forEach(m => m.dispose());
+          else obj.material.dispose();
+        }
+      });
       scene.remove(antennaRef.current);
       antennaRef.current = null;
     }

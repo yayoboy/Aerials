@@ -37,7 +37,6 @@ export default function App() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          antenna_type:   antennaType,
           antenna_params: params,
           conductor,
         }),

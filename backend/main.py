@@ -9,75 +9,76 @@ def _load_simulators():
     try:
         from app.simulators.dipole import simulate_dipole
         simulators["dipole"] = simulate_dipole
-    except ImportError:
-        pass
+    except ImportError as e:
+        print(f"[WARNING] Could not load dipole simulator: {e}", flush=True)
 
     try:
         from app.simulators.folded_dipole import simulate_folded_dipole
         simulators["folded_dipole"] = simulate_folded_dipole
-    except ImportError:
-        pass
+    except ImportError as e:
+        print(f"[WARNING] Could not load folded_dipole simulator: {e}", flush=True)
 
     try:
         from app.simulators.monopole import simulate_monopole
         simulators["monopole"] = simulate_monopole
-    except ImportError:
-        pass
+    except ImportError as e:
+        print(f"[WARNING] Could not load monopole simulator: {e}", flush=True)
 
     try:
         from app.simulators.yagi import simulate_yagi
         simulators["yagi"] = simulate_yagi
-    except ImportError:
-        pass
+    except ImportError as e:
+        print(f"[WARNING] Could not load yagi simulator: {e}", flush=True)
 
     try:
         from app.simulators.inverted_v import simulate_inverted_v
         simulators["inverted_v"] = simulate_inverted_v
-    except ImportError:
-        pass
+    except ImportError as e:
+        print(f"[WARNING] Could not load inverted_v simulator: {e}", flush=True)
 
     try:
         from app.simulators.loop import simulate_loop
         simulators["loop"] = simulate_loop
-    except ImportError:
-        pass
+    except ImportError as e:
+        print(f"[WARNING] Could not load loop simulator: {e}", flush=True)
 
     try:
         from app.simulators.helix import simulate_helix
         simulators["helix"] = simulate_helix
-    except ImportError:
-        pass
+    except ImportError as e:
+        print(f"[WARNING] Could not load helix simulator: {e}", flush=True)
 
     try:
         from app.simulators.sleeve import simulate_sleeve
         simulators["sleeve"] = simulate_sleeve
-    except ImportError:
-        pass
+    except ImportError as e:
+        print(f"[WARNING] Could not load sleeve simulator: {e}", flush=True)
 
     try:
         from app.simulators.discone import simulate_discone
         simulators["discone"] = simulate_discone
-    except ImportError:
-        pass
+    except ImportError as e:
+        print(f"[WARNING] Could not load discone simulator: {e}", flush=True)
 
     try:
         from app.simulators.patch import simulate_patch
         simulators["patch"] = simulate_patch
-    except ImportError:
-        pass
+    except ImportError as e:
+        print(f"[WARNING] Could not load patch simulator: {e}", flush=True)
 
     try:
         from app.simulators.ground_plane import simulate_ground_plane
         simulators["ground_plane"] = simulate_ground_plane
-    except ImportError:
-        pass
+    except ImportError as e:
+        print(f"[WARNING] Could not load ground_plane simulator: {e}", flush=True)
 
     try:
         from app.simulators.jpole import simulate_jpole
         simulators["jpole"] = simulate_jpole
-    except ImportError:
-        pass
+    except ImportError as e:
+        print(f"[WARNING] Could not load jpole simulator: {e}", flush=True)
 
+    print(f"[INFO] Loaded {len(simulators)}/12 simulators: {list(simulators.keys())}", flush=True)
     return simulators
 
 SIMULATOR_MAP = _load_simulators()
