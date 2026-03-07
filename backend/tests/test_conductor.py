@@ -23,3 +23,21 @@ def test_tube_section_requires_outer_and_wall():
                         cross_section=CrossSection.TUBE,
                         outer_diameter_mm=10.0, wall_thickness_mm=1.0)
     assert p.outer_diameter_mm == 10.0
+
+def test_square_section_requires_width():
+    with pytest.raises(Exception):
+        ConductorParams(cross_section=CrossSection.SQUARE, width_mm=None)
+
+def test_flat_section_requires_width_and_thickness():
+    with pytest.raises(Exception):
+        ConductorParams(cross_section=CrossSection.FLAT, width_mm=10.0)  # no thickness_mm
+
+def test_effective_radius_tube():
+    p = ConductorParams(cross_section=CrossSection.TUBE,
+                        outer_diameter_mm=10.0, wall_thickness_mm=1.0)
+    assert p.effective_radius_mm() == pytest.approx(5.0)
+
+def test_effective_radius_flat():
+    p = ConductorParams(cross_section=CrossSection.FLAT, width_mm=4.0, thickness_mm=1.0)
+    import math
+    assert p.effective_radius_mm() == pytest.approx(math.sqrt(4.0) / 2.0)

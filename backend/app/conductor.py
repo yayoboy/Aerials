@@ -1,3 +1,4 @@
+import math
 from enum import Enum
 from typing import Optional
 from pydantic import BaseModel, model_validator
@@ -52,7 +53,7 @@ class ConductorParams(BaseModel):
         if cs == CrossSection.FLAT:
             if self.width_mm is None or self.thickness_mm is None:
                 raise ValueError("width_mm and thickness_mm required for flat cross-section")
-        elif cs == CrossSection.SQUARE and self.width_mm is None:
+        if cs == CrossSection.SQUARE and self.width_mm is None:
             raise ValueError("width_mm required for square cross-section")
         return self
 
@@ -64,6 +65,5 @@ class ConductorParams(BaseModel):
         if self.cross_section == CrossSection.SQUARE:
             return self.width_mm / 2.0
         if self.cross_section == CrossSection.FLAT:
-            import math
             return math.sqrt(self.width_mm * self.thickness_mm) / 2.0
         return 1.0
