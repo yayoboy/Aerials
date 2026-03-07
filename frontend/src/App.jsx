@@ -6,6 +6,7 @@ import AntennaForm     from './components/AntennaForm.jsx';
 import ConductorForm   from './components/ConductorForm.jsx';
 import S11Chart        from './components/S11Chart.jsx';
 import Antenna3DView   from './components/Antenna3DView.jsx';
+import AntennaSpecs    from './components/AntennaSpecs.jsx';
 import { ANTENNA_MAP } from './antennas/configs/index.js';
 
 const DEFAULT_CONDUCTOR = {
@@ -105,6 +106,11 @@ export default function App() {
               conductor={conductor}
             />
           </div>
+          <AntennaSpecs
+            antennaType={antennaType}
+            params={params}
+            conductor={conductor}
+          />
         </div>
 
         <div className="glass-panel">
