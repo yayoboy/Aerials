@@ -39,7 +39,10 @@ export default function ConductorForm({ conductor, onChange }) {
       <div className="form-group">
         <label>Sezione trasversale</label>
         <select className="form-input" value={conductor.cross_section}
-                onChange={e => set('cross_section', e.target.value)}>
+                onChange={e => {
+                  const sec = CROSS_SECTIONS.find(s => s.id === e.target.value);
+                  onChange({ ...conductor, cross_section: e.target.value, ...sec.defaults });
+                }}>
           {CROSS_SECTIONS.map(s => (
             <option key={s.id} value={s.id}>{s.label}</option>
           ))}

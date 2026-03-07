@@ -8,8 +8,12 @@ export const MATERIALS = [
 ];
 
 export const CROSS_SECTIONS = [
-  { id: 'round',  label: 'Filo tondo',        fields: ['radius_mm'] },
-  { id: 'tube',   label: 'Tubo',              fields: ['outer_diameter_mm', 'wall_thickness_mm'] },
-  { id: 'flat',   label: 'Nastro piatto',     fields: ['width_mm', 'thickness_mm'] },
-  { id: 'square', label: 'Profilo quadrato',  fields: ['width_mm'] },
+  { id: 'round',  label: 'Filo tondo',        fields: ['radius_mm'],
+    defaults: { radius_mm: 1.0 } },
+  { id: 'tube',   label: 'Tubo',              fields: ['outer_diameter_mm', 'wall_thickness_mm'],
+    defaults: { outer_diameter_mm: 10.0, wall_thickness_mm: 1.0 } },
+  { id: 'flat',   label: 'Nastro piatto',     fields: ['width_mm', 'thickness_mm'],
+    defaults: { width_mm: 10.0, thickness_mm: 1.0 } },
+  { id: 'square', label: 'Profilo quadrato',  fields: ['width_mm'],
+    defaults: { width_mm: 5.0 } },
 ];
