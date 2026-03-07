@@ -49,8 +49,11 @@ class ConductorParams(BaseModel):
         if cs == CrossSection.TUBE:
             if self.outer_diameter_mm is None or self.wall_thickness_mm is None:
                 raise ValueError("outer_diameter_mm and wall_thickness_mm required for tube")
-        if cs in (CrossSection.FLAT, CrossSection.SQUARE) and self.width_mm is None:
-            raise ValueError("width_mm required for flat/square cross-section")
+        if cs == CrossSection.FLAT:
+            if self.width_mm is None or self.thickness_mm is None:
+                raise ValueError("width_mm and thickness_mm required for flat cross-section")
+        elif cs == CrossSection.SQUARE and self.width_mm is None:
+            raise ValueError("width_mm required for square cross-section")
         return self
 
     def effective_radius_mm(self) -> float:
