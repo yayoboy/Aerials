@@ -1,158 +1,119 @@
-import React, { useState } from 'react';
-import Plot from 'react-plotly.js';
+// frontend/src/App.jsx
+import { useState } from 'react';
+import AntennaSelector from './components/AntennaSelector.jsx';
+import AntennaForm     from './components/AntennaForm.jsx';
+import ConductorForm   from './components/ConductorForm.jsx';
+import S11Chart        from './components/S11Chart.jsx';
+import Antenna3DView   from './components/Antenna3DView.jsx';
+import { ANTENNA_MAP } from './antennas/configs/index.js';
 
-function App() {
-  const [params, setParams] = useState({
-    frequency_mhz: 300,
-    length_mm: 475,
-    radius_mm: 1.0
-  });
+const DEFAULT_CONDUCTOR = {
+  material: 'copper',
+  cross_section: 'round',
+  radius_mm: 1.0,
+};
 
-  const [loading, setLoading] = useState(false);
-  const [results, setResults] = useState(null);
+export default function App() {
+  const [antennaType, setAntennaType] = useState('dipole');
+  const [params,      setParams]      = useState(ANTENNA_MAP['dipole'].defaultParams);
+  const [conductor,   setConductor]   = useState(DEFAULT_CONDUCTOR);
+  const [loading,     setLoading]     = useState(false);
+  const [results,     setResults]     = useState(null);
+  const [error,       setError]       = useState(null);
+
+  const handleAntennaChange = (type) => {
+    setAntennaType(type);
+    setParams(ANTENNA_MAP[type].defaultParams);
+    setResults(null);
+    setError(null);
+  };
 
   const handleSimulate = async () => {
     setLoading(true);
+    setResults(null);
+    setError(null);
     try {
-      const response = await fetch('http://localhost:8000/simulate/dipole', {
+      const res = await fetch(`http://localhost:8000/simulate/${antennaType}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(params)
+        body: JSON.stringify({
+          antenna_type:   antennaType,
+          antenna_params: params,
+          conductor,
+        }),
       });
-      const data = await response.json();
-      setResults(data);
-    } catch (error) {
-      console.error("Simulation failed:", error);
+      const data = await res.json();
+      if (!res.ok) {
+        setError(data.detail ?? 'Simulation failed');
+      } else {
+        setResults(data);
+      }
+    } catch (err) {
+      setError(err.message);
     } finally {
       setLoading(false);
     }
   };
 
-  const handleParamChange = (e) => {
-    setParams({
-      ...params,
-      [e.target.name]: parseFloat(e.target.value) || 0
-    });
-  };
+  const cfg = ANTENNA_MAP[antennaType];
 
   return (
     <div className="app-container">
-      {/* Sidebar Controls */}
       <aside className="sidebar">
-        <h1>
-          <span className="icon">⚡</span>
-          OpenEMS Web
-        </h1>
+        <h1><span className="icon">⚡</span>Aerials</h1>
 
         <div className="form-group">
-          <label>Antenna Type</label>
-          <select className="form-input" disabled>
-            <option>Half-Wave Dipole</option>
-          </select>
+          <label>Tipo di Antenna</label>
+          <AntennaSelector selected={antennaType} onChange={handleAntennaChange} />
         </div>
 
-        <div className="form-group">
-          <label>Frequency (MHz)</label>
-          <input
-            className="form-input"
-            type="number"
-            name="frequency_mhz"
-            value={params.frequency_mhz}
-            onChange={handleParamChange}
-          />
-        </div>
+        <AntennaForm
+          antennaType={antennaType}
+          params={params}
+          onChange={setParams}
+        />
 
-        <div className="form-group">
-          <label>Length (mm)</label>
-          <input
-            className="form-input"
-            type="number"
-            name="length_mm"
-            value={params.length_mm}
-            onChange={handleParamChange}
-          />
-        </div>
-
-        <div className="form-group">
-          <label>Wire Radius (mm)</label>
-          <input
-            className="form-input"
-            type="number"
-            name="radius_mm"
-            value={params.radius_mm}
-            onChange={handleParamChange}
-          />
-        </div>
+        <ConductorForm
+          conductor={conductor}
+          onChange={setConductor}
+        />
 
         <button
           className="btn-primary"
           onClick={handleSimulate}
           disabled={loading}
         >
-          {loading ? 'Simulating...' : 'Run FDTD Simulation'}
+          {loading ? 'Simulazione in corso...' : 'Avvia simulazione FDTD'}
         </button>
+
+        {error && (
+          <p style={{ color: '#f85149', marginTop: '8px', fontSize: '13px' }}>
+            Errore: {error}
+          </p>
+        )}
       </aside>
 
-      {/* Main Content Area */}
       <main className="main-content">
+        <div className="glass-panel">
+          <h2 className="panel-header">
+            Vista 3D — {cfg?.label ?? antennaType}
+          </h2>
+          <div className="plot-container" style={{ height: '340px' }}>
+            <Antenna3DView
+              antennaType={antennaType}
+              params={params}
+              conductor={conductor}
+            />
+          </div>
+        </div>
 
         <div className="glass-panel">
-          <h2 className="panel-header">Simulation Results: S11 Return Loss</h2>
+          <h2 className="panel-header">S11 Return Loss</h2>
           <div className="plot-container">
-            {loading ? (
-              <div className="spinner"></div>
-            ) : results && results.results ? (
-              <Plot
-                data={[
-                  {
-                    x: results.results.frequencies_mhz,
-                    y: results.results.s11_db,
-                    type: 'scatter',
-                    mode: 'lines+markers',
-                    marker: { color: '#2f81f7', size: 8 },
-                    line: { color: '#2f81f7', width: 3 }
-                  }
-                ]}
-                layout={{
-                  autosize: true,
-                  paper_bgcolor: 'transparent',
-                  plot_bgcolor: 'transparent',
-                  font: { color: '#8b949e', family: 'Inter' },
-                  xaxis: {
-                    title: 'Frequency (MHz)',
-                    gridcolor: 'rgba(240, 246, 252, 0.1)',
-                    zerolinecolor: 'rgba(240, 246, 252, 0.2)'
-                  },
-                  yaxis: {
-                    title: 'S11 (dB)',
-                    gridcolor: 'rgba(240, 246, 252, 0.1)',
-                    zerolinecolor: 'rgba(240, 246, 252, 0.2)'
-                  },
-                  margin: { t: 20, r: 20, l: 60, b: 60 }
-                }}
-                useResizeHandler={true}
-                style={{ width: '100%', height: '100%' }}
-              />
-            ) : (
-              <p style={{ color: 'var(--text-secondary)' }}>
-                Configure parameters and run the simulation to view results.
-              </p>
-            )}
+            <S11Chart results={results} loading={loading} />
           </div>
         </div>
-
-        <div className="glass-panel">
-          <h2 className="panel-header">3D View (Coming Soon)</h2>
-          <div className="plot-container" style={{ height: '300px' }}>
-            <p style={{ color: 'var(--text-secondary)' }}>
-              Three.js integration for 3D antenna geometry visualization.
-            </p>
-          </div>
-        </div>
-
       </main>
     </div>
   );
 }
-
-export default App;
