@@ -43,9 +43,10 @@ function exportCsv(freqs, s11, vswr) {
 export default function S11Chart({ results, loading }) {
   const [showVswr,  setShowVswr]  = useState(false);
   const [showBands, setShowBands] = useState(false);
+  const plotElRef = useRef(null);
 
   const downloadPng = () => {
-    const el = document.getElementById('s11-plot');
+    const el = plotElRef.current;
     if (!el) return;
     window.Plotly.downloadImage(el, {
       format: 'png',
@@ -222,7 +223,6 @@ export default function S11Chart({ results, loading }) {
 
         <button
           onClick={downloadPng}
-          disabled={!results?.results}
           style={{
             padding: '4px 10px', fontSize: '12px', cursor: 'pointer',
             border: '1px solid #30363d', borderRadius: '6px',
@@ -235,11 +235,12 @@ export default function S11Chart({ results, loading }) {
       {/* Chart */}
       <div style={{ flex: 1, minHeight: 0 }}>
         <Plot
-          divId="s11-plot"
           data={[mainTrace, ...vswrThreshold]}
           layout={layout}
           useResizeHandler
           style={{ width: '100%', height: '100%' }}
+          onInitialized={(figure, graphDiv) => { plotElRef.current = graphDiv; }}
+          onUpdate={(figure, graphDiv) => { plotElRef.current = graphDiv; }}
         />
       </div>
     </div>
