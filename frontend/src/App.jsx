@@ -1,5 +1,6 @@
 // frontend/src/App.jsx
 import { useState } from 'react';
+import './App.css';
 import AntennaSelector from './components/AntennaSelector.jsx';
 import AntennaForm     from './components/AntennaForm.jsx';
 import ConductorForm   from './components/ConductorForm.jsx';
