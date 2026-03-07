@@ -4,7 +4,7 @@ export function buildSleeve(params, conductor, color) {
   const group      = new THREE.Group();
   const monoLen    = (params.monopole_length_mm ?? 490) * 0.001;
   const sleeveLen  = (params.sleeve_length_mm ?? 245) * 0.001;
-  const radius     = (conductor?.radius_mm ?? 1) * 0.001;
+  const radius     = Math.max((conductor?.radius_mm ?? 1) * 0.001, monoLen * 0.02);
   const sleeveR    = radius * 4;
   const mat        = new THREE.MeshStandardMaterial({ color, metalness: 0.8, roughness: 0.4 });
   const sleeveMat  = new THREE.MeshStandardMaterial({ color: 0x666666, metalness: 0.7, roughness: 0.4 });

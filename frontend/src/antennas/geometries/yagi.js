@@ -3,7 +3,7 @@ import * as THREE from 'three';
 export function buildYagi(params, conductor, color) {
   const group    = new THREE.Group();
   const spacing  = (params.element_spacing_mm ?? 300) * 0.001;
-  const radius   = (conductor?.radius_mm ?? 1) * 0.001;
+  const radius   = Math.max((conductor?.radius_mm ?? 1) * 0.001, (params.driven_length_mm ?? 1020) * 0.001 * 0.02);
   const matDriven   = new THREE.MeshStandardMaterial({ color, metalness: 0.8, roughness: 0.4 });
   const matRef      = new THREE.MeshStandardMaterial({ color: 0x4488ff, metalness: 0.8, roughness: 0.4 });
   const matDir      = new THREE.MeshStandardMaterial({ color: 0x888888, metalness: 0.8, roughness: 0.4 });

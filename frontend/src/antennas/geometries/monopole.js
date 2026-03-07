@@ -4,7 +4,7 @@ export function buildMonopole(params, conductor, color) {
   const group    = new THREE.Group();
   const length   = (params.length_mm ?? 237.5) * 0.001;
   const gpRadius = (params.groundplane_mm ?? 300) / 2 * 0.001;
-  const radius   = (conductor?.radius_mm ?? 1) * 0.001;
+  const radius   = Math.max((conductor?.radius_mm ?? 1) * 0.001, length * 0.02);
   const mat      = new THREE.MeshStandardMaterial({ color, metalness: 0.8, roughness: 0.4 });
   const gpMat    = new THREE.MeshStandardMaterial({ color: 0x444444, metalness: 0.6, roughness: 0.5 });
 

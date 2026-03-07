@@ -5,7 +5,7 @@ export function buildGroundPlane(params, conductor, color) {
   const radialLen  = (params.radial_length_mm ?? 490) * 0.001;
   const numRadials = params.num_radials ?? 4;
   const angleRad   = (params.radial_angle_deg ?? 45) * Math.PI / 180;
-  const radius     = (conductor?.radius_mm ?? 1) * 0.001;
+  const radius     = Math.max((conductor?.radius_mm ?? 1) * 0.001, radialLen * 0.02);
   const mat        = new THREE.MeshStandardMaterial({ color, metalness: 0.8, roughness: 0.4 });
 
   // Monopole element (vertical, upward)

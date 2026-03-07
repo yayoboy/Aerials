@@ -4,7 +4,7 @@ export function buildLoop(params, conductor, color) {
   const group  = new THREE.Group();
   const perim  = (params.perimeter_mm ?? 21400) * 0.001;
   const side   = perim / 4;
-  const radius = (conductor?.radius_mm ?? 1) * 0.001;
+  const radius = Math.max((conductor?.radius_mm ?? 1) * 0.001, side * 0.02);
   const mat    = new THREE.MeshStandardMaterial({ color, metalness: 0.8, roughness: 0.4 });
   const half   = side / 2;
 

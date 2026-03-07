@@ -5,7 +5,7 @@ export function buildDiscone(params, conductor, color) {
   const coneLen  = (params.cone_length_mm ?? 185) * 0.001;
   const coneAng  = (params.cone_angle_deg ?? 60) * Math.PI / 180;
   const discR    = (params.disc_diameter_mm ?? 150) / 2 * 0.001;
-  const radius   = (conductor?.radius_mm ?? 1) * 0.001;
+  const radius   = Math.max((conductor?.radius_mm ?? 1) * 0.001, coneLen * 0.02);
   const coneR    = coneLen * Math.sin(coneAng);
   const mat      = new THREE.MeshStandardMaterial({ color, metalness: 0.8, roughness: 0.4 });
   const discMat  = new THREE.MeshStandardMaterial({ color: 0x444444, metalness: 0.6, roughness: 0.5 });

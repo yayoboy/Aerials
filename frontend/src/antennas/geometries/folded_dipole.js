@@ -4,7 +4,7 @@ export function buildFoldedDipole(params, conductor, color) {
   const group   = new THREE.Group();
   const length  = (params.length_mm ?? 1020) * 0.001;
   const spacing = (params.spacing_mm ?? 25) * 0.001;
-  const radius  = (conductor?.radius_mm ?? 1) * 0.001;
+  const radius  = Math.max((conductor?.radius_mm ?? 1) * 0.001, length * 0.02);
   const mat     = new THREE.MeshStandardMaterial({ color, metalness: 0.8, roughness: 0.4 });
   const half    = length / 2;
 

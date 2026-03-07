@@ -5,7 +5,7 @@ export function buildHelix(params, conductor, color) {
   const helixR    = (params.diameter_mm ?? 40) / 2 * 0.001;
   const pitch     = (params.pitch_mm ?? 30) * 0.001;
   const turns     = params.turns ?? 8;
-  const radius    = (conductor?.radius_mm ?? 1) * 0.001;
+  const radius    = Math.max((conductor?.radius_mm ?? 1) * 0.001, helixR * 0.15);
   const totalH    = turns * pitch;
   const stepsPerTurn = 16;
   const totalSteps   = turns * stepsPerTurn;

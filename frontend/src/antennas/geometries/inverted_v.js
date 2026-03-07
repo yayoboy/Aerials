@@ -5,7 +5,7 @@ export function buildInvertedV(params, conductor, color) {
   const armLen     = (params.length_mm ?? 20200) / 2 * 0.001;
   const apexH      = Math.min((params.height_mm ?? 15000) * 0.001, armLen * 0.8);
   const halfAngle  = (params.apex_angle_deg ?? 120) / 2 * Math.PI / 180;
-  const radius     = (conductor?.radius_mm ?? 1) * 0.001;
+  const radius     = Math.max((conductor?.radius_mm ?? 1) * 0.001, armLen * 0.02);
   const mat        = new THREE.MeshStandardMaterial({ color, metalness: 0.8, roughness: 0.4 });
 
   // Each arm as a rotated cylinder
