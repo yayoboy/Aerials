@@ -1,6 +1,6 @@
 import pytest
 from app.models import (
-    DipoleParams, MonopoleParams, YagiParams, PatchParams, SimulationRequest
+    DipoleParams, YagiParams, PatchParams, SimulationRequest
 )
 from app.conductor import ConductorParams
 
