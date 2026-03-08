@@ -183,23 +183,28 @@ export default function S11Chart({ results, loading }) {
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
       {/* Toolbar */}
       <div style={{ display: 'flex', gap: '8px', marginBottom: '8px', alignItems: 'center' }}>
-        <div style={{ display: 'flex', borderRadius: '6px', overflow: 'hidden', border: '1px solid #30363d' }}>
-          <button
-            onClick={() => setShowVswr(false)}
-            style={{
-              padding: '4px 10px', fontSize: '12px', cursor: 'pointer', border: 'none',
-              background: !showVswr ? '#1c2e4a' : 'transparent',
-              color: !showVswr ? '#f0f6fc' : '#8b949e',
-            }}
-          ><Glossary term="S11">S11</Glossary></button>
-          <button
-            onClick={() => setShowVswr(true)}
-            style={{
-              padding: '4px 10px', fontSize: '12px', cursor: 'pointer', border: 'none',
-              background: showVswr ? '#1c2e4a' : 'transparent',
-              color: showVswr ? '#f0f6fc' : '#8b949e',
-            }}
-          ><Glossary term="VSWR">VSWR</Glossary></button>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+          <span style={{ fontSize: '10px', color: '#8b949e', paddingLeft: '2px' }}>
+            <Glossary term="S11">S11</Glossary> / <Glossary term="VSWR">VSWR</Glossary>
+          </span>
+          <div style={{ display: 'flex', borderRadius: '6px', overflow: 'hidden', border: '1px solid #30363d' }}>
+            <button
+              onClick={() => setShowVswr(false)}
+              style={{
+                padding: '4px 10px', fontSize: '12px', cursor: 'pointer', border: 'none',
+                background: !showVswr ? '#1c2e4a' : 'transparent',
+                color: !showVswr ? '#f0f6fc' : '#8b949e',
+              }}
+            >S11</button>
+            <button
+              onClick={() => setShowVswr(true)}
+              style={{
+                padding: '4px 10px', fontSize: '12px', cursor: 'pointer', border: 'none',
+                background: showVswr ? '#1c2e4a' : 'transparent',
+                color: showVswr ? '#f0f6fc' : '#8b949e',
+              }}
+            >VSWR</button>
+          </div>
         </div>
 
         <button
