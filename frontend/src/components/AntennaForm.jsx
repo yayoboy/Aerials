@@ -5,11 +5,21 @@ export default function AntennaForm({ antennaType, params, onChange }) {
   const cfg = ANTENNA_MAP[antennaType];
   if (!cfg) return null;
 
+  const clampToField = (key, val) => {
+    const field = cfg.fields.find(f => f.name === key);
+    if (!field || typeof val !== 'number') return val;
+    const lo = field.min, hi = field.max;
+    return lo != null && val < lo ? lo : hi != null && val > hi ? hi : val;
+  };
+
   const set = (name, value) => {
     const updated = { ...params, [name]: value };
     if (name === 'frequency_mhz' && typeof cfg.derivedFromFreq === 'function') {
       const derived = cfg.derivedFromFreq(value, params);
-      onChange({ ...updated, ...derived });
+      const clampedDerived = Object.fromEntries(
+        Object.entries(derived).map(([k, v]) => [k, clampToField(k, v)])
+      );
+      onChange({ ...updated, ...clampedDerived });
     } else {
       onChange(updated);
     }

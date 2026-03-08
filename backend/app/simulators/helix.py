@@ -23,7 +23,7 @@ def simulate_helix(params: dict, conductor: ConductorParams = None) -> dict:
     steps_per_turn = 16
     total_steps = p.turns * steps_per_turn
 
-    FDTD = openEMS.openEMS(EndCriteria=5e-4)
+    FDTD = openEMS.openEMS(EndCriteria=5e-4, MaxTime=60)
     FDTD.SetGaussExcite(f0, f0 / 2)
     FDTD.SetBoundaryCond(['PML_8'] * 6)
     CSX  = CSXCAD.ContinuousStructure()

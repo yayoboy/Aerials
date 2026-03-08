@@ -24,7 +24,7 @@ def simulate_dipole(params: dict, conductor: ConductorParams = None, with_radiat
     lambda_min = c0 / f_max * 1000.0
     res     = lambda_min / 10.0
 
-    FDTD = openEMS.openEMS(EndCriteria=5e-4)
+    FDTD = openEMS.openEMS(EndCriteria=5e-4, MaxTime=60)
     FDTD.SetGaussExcite(f0, f0 / 2)
     FDTD.SetBoundaryCond(['PML_8'] * 6)
 

@@ -23,7 +23,7 @@ def simulate_discone(params: dict, conductor: ConductorParams = None) -> dict:
     n_panels = 8
     half_angle_rad = math.radians(p.cone_angle_deg)
 
-    FDTD = openEMS.openEMS(EndCriteria=5e-4)
+    FDTD = openEMS.openEMS(EndCriteria=5e-4, MaxTime=60)
     FDTD.SetGaussExcite(f0, f0 / 2)
     FDTD.SetBoundaryCond(['PML_8'] * 6)
     CSX  = CSXCAD.ContinuousStructure()

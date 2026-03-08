@@ -20,7 +20,7 @@ def simulate_monopole(params: dict, conductor: ConductorParams = None) -> dict:
     pad       = lambda0 / 4.0
     gap       = 2.0
 
-    FDTD = openEMS.openEMS(EndCriteria=5e-4)
+    FDTD = openEMS.openEMS(EndCriteria=5e-4, MaxTime=60)
     FDTD.SetGaussExcite(f0, f0 / 2)
     FDTD.SetBoundaryCond(['PML_8'] * 6)
 

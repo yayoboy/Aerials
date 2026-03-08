@@ -142,12 +142,21 @@ body {
 /* Main Content Area */
 .main-content {
   flex: 1;
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto auto;
+  grid-template-areas:
+    "view  chart"
+    "view  diagram";
+  gap: 24px;
   padding: 24px;
   overflow-y: auto;
-  position: relative;
+  align-content: start;
 }
+
+.panel-3d    { grid-area: view; }
+.panel-chart { grid-area: chart; }
+.panel-diagram { grid-area: diagram; }
 
 /* Glass Panels for content */
 .glass-panel {
@@ -158,7 +167,6 @@ body {
   border-radius: var(--border-radius);
   box-shadow: var(--glass-shadow);
   padding: 24px;
-  margin-bottom: 24px;
   animation: fade-in 0.6s ease-out;
 }
 

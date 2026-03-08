@@ -30,7 +30,7 @@ def simulate_moxon(params: dict, conductor: ConductorParams = None) -> dict:
     D     = max(lambda0 * 0.005, 1.0)
     depth = B + D + B
 
-    FDTD = openEMS.openEMS(EndCriteria=5e-4)
+    FDTD = openEMS.openEMS(EndCriteria=5e-4, MaxTime=60)
     FDTD.SetGaussExcite(f0, f0 / 2)
     FDTD.SetBoundaryCond(['PML_8'] * 6)
 

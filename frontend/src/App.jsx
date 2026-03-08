@@ -53,6 +53,8 @@ export default function App() {
     setLoading(true);
     setResults(null);
     setError(null);
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 120_000);
     try {
       const res = await fetch(`/api/simulate/${antennaType}`, {
         method: 'POST',
@@ -61,6 +63,7 @@ export default function App() {
           antenna_params: params,
           conductor,
         }),
+        signal: controller.signal,
       });
       const data = await res.json();
       if (!res.ok) {
@@ -86,8 +89,13 @@ export default function App() {
         saveHistory(updated);
       }
     } catch (err) {
-      setError(err.message);
+      if (err.name === 'AbortError') {
+        setError('Simulazione interrotta: timeout di 120 secondi superato.');
+      } else {
+        setError(err.message);
+      }
     } finally {
+      clearTimeout(timeout);
       setLoading(false);
     }
   };
@@ -153,7 +161,7 @@ export default function App() {
       </aside>
 
       <main className="main-content">
-        <div className="glass-panel">
+        <div className="glass-panel panel-3d">
           <h2 className="panel-header">
             Vista 3D — {cfg?.label ?? antennaType}
           </h2>
@@ -171,14 +179,14 @@ export default function App() {
           />
         </div>
 
-        <div className="glass-panel">
+        <div className="glass-panel panel-chart">
           <h2 className="panel-header">S11 Return Loss</h2>
           <div className="plot-container">
             <S11Chart results={results} loading={loading} />
           </div>
         </div>
 
-        <div className="glass-panel">
+        <div className="glass-panel panel-diagram">
           <h2 className="panel-header">
             Diagramma costruttivo — {cfg?.label ?? antennaType}
           </h2>

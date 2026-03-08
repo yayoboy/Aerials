@@ -22,7 +22,7 @@ def simulate_jpole(params: dict, conductor: ConductorParams = None) -> dict:
     stub_len = p.stub_length_mm
     spacing  = p.stub_spacing_mm
 
-    FDTD = openEMS.openEMS(EndCriteria=5e-4)
+    FDTD = openEMS.openEMS(EndCriteria=5e-4, MaxTime=60)
     FDTD.SetGaussExcite(f0, f0 / 2)
     FDTD.SetBoundaryCond(['PML_8'] * 6)
     CSX  = CSXCAD.ContinuousStructure()

@@ -20,7 +20,7 @@ def simulate_loop(params: dict, conductor: ConductorParams = None) -> dict:
 
     side = p.perimeter_mm / 4.0  # side length for square loop
 
-    FDTD = openEMS.openEMS(EndCriteria=5e-4)
+    FDTD = openEMS.openEMS(EndCriteria=5e-4, MaxTime=60)
     FDTD.SetGaussExcite(f0, f0 / 2)
     FDTD.SetBoundaryCond(['PML_8'] * 6)
     CSX  = CSXCAD.ContinuousStructure()
