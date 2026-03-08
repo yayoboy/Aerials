@@ -8,6 +8,7 @@ import S11Chart        from './components/S11Chart.jsx';
 import Antenna3DView   from './components/Antenna3DView.jsx';
 import AntennaSpecs    from './components/AntennaSpecs.jsx';
 import SimHistory      from './components/SimHistory.jsx';
+import AntennaDiagram  from './components/AntennaDiagram.jsx';
 import { ANTENNA_MAP } from './antennas/configs/index.js';
 
 const HISTORY_KEY = 'aerials_history';
@@ -174,6 +175,15 @@ export default function App() {
           <h2 className="panel-header">S11 Return Loss</h2>
           <div className="plot-container">
             <S11Chart results={results} loading={loading} />
+          </div>
+        </div>
+
+        <div className="glass-panel">
+          <h2 className="panel-header">
+            Diagramma costruttivo — {cfg?.label ?? antennaType}
+          </h2>
+          <div className="plot-container" style={{ height: '220px' }}>
+            <AntennaDiagram antennaType={antennaType} params={params} />
           </div>
         </div>
       </main>
