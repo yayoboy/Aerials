@@ -20,18 +20,37 @@ export default function AntennaForm({ antennaType, params, onChange }) {
                 <option key={o.value} value={o.value}>{o.label}</option>
               ))}
             </select>
+          ) : field.type === 'number' ? (
+            <div className="slider-row">
+              <input
+                type="range"
+                className="param-slider"
+                min={field.min ?? 1}
+                max={field.max ?? (params[field.name] ?? 100) * 3}
+                step={field.step ?? 1}
+                value={typeof params[field.name] === 'number' ? params[field.name] : (field.min ?? 1)}
+                onChange={e => set(field.name, parseFloat(e.target.value))}
+              />
+              <input
+                type="number"
+                className="form-input slider-number"
+                min={field.min}
+                max={field.max}
+                step={field.step}
+                value={params[field.name] ?? ''}
+                onChange={e => {
+                  const v = e.target.value === '' ? '' : parseFloat(e.target.value);
+                  set(field.name, v);
+                }}
+              />
+            </div>
           ) : (
             <input
               className="form-input"
               type={field.type}
-              min={field.min}
-              max={field.max}
-              step={field.step}
               value={Array.isArray(params[field.name]) ? params[field.name].join(', ') : (params[field.name] ?? '')}
               onChange={e => {
-                if (field.type === 'number') {
-                  set(field.name, e.target.value === '' ? '' : parseFloat(e.target.value));
-                } else if (field.type === 'text' && field.name === 'director_lengths_mm') {
+                if (field.type === 'text' && field.name === 'director_lengths_mm') {
                   // Parse comma-separated numbers to array
                   const arr = e.target.value.split(',').map(s => parseFloat(s.trim())).filter(n => !isNaN(n));
                   set(field.name, arr.length > 0 ? arr : [980]);

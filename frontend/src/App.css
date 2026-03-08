@@ -150,3 +150,23 @@
   text-align: right;
   white-space: nowrap;
 }
+
+/* ── Slider row ──────────────────────────────────────────────────────────── */
+.slider-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.param-slider {
+  flex: 1;
+  accent-color: #2f81f7;
+  cursor: pointer;
+  min-width: 0;
+}
+
+.slider-number {
+  width: 72px;
+  flex-shrink: 0;
+  text-align: right;
+}
