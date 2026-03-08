@@ -26,7 +26,7 @@ export default function AntennaForm({ antennaType, params, onChange }) {
                 type="range"
                 className="param-slider"
                 min={field.min ?? 1}
-                max={field.max ?? (params[field.name] ?? 100) * 3}
+                max={field.max ?? 9999}
                 step={field.step ?? 1}
                 value={typeof params[field.name] === 'number' ? params[field.name] : (field.min ?? 1)}
                 onChange={e => set(field.name, parseFloat(e.target.value))}
@@ -39,8 +39,13 @@ export default function AntennaForm({ antennaType, params, onChange }) {
                 step={field.step}
                 value={params[field.name] ?? ''}
                 onChange={e => {
-                  const v = e.target.value === '' ? '' : parseFloat(e.target.value);
-                  set(field.name, v);
+                  if (e.target.value === '') { set(field.name, ''); return; }
+                  const v = parseFloat(e.target.value);
+                  if (isNaN(v)) return;
+                  const lo = field.min;
+                  const hi = field.max;
+                  const clamped = lo != null && v < lo ? lo : hi != null && v > hi ? hi : v;
+                  set(field.name, clamped);
                 }}
               />
             </div>
