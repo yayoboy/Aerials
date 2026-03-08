@@ -242,3 +242,34 @@
 .history-delete:hover {
   color: #f85149;
 }
+
+/* ── Glossary tooltips ───────────────────────────────────────────────────── */
+.glossary-term {
+  border-bottom: 1px dashed #8b949e;
+  cursor: help;
+  position: relative;
+  white-space: nowrap;
+}
+.glossary-term::after {
+  content: attr(data-tip);
+  display: none;
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: #161b22;
+  border: 1px solid #30363d;
+  border-radius: 6px;
+  padding: 7px 11px;
+  font-size: 12px;
+  line-height: 1.5;
+  color: #c9d1d9;
+  width: 240px;
+  white-space: normal;
+  z-index: 200;
+  pointer-events: none;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+}
+.glossary-term:hover::after {
+  display: block;
+}
