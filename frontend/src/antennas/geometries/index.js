@@ -10,6 +10,7 @@ import { buildDiscone }     from './discone.js';
 import { buildPatch }       from './patch.js';
 import { buildGroundPlane } from './ground_plane.js';
 import { buildJPole }       from './jpole.js';
+import { buildMoxon }       from './moxon.js';
 
 export const GEOMETRY_BUILDERS = {
   dipole:        buildDipole,
@@ -24,4 +25,5 @@ export const GEOMETRY_BUILDERS = {
   patch:         buildPatch,
   ground_plane:  buildGroundPlane,
   jpole:         buildJPole,
+  moxon:         buildMoxon,
 };

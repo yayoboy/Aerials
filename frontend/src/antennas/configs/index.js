@@ -10,10 +10,11 @@ import discone      from './discone.js';
 import patch        from './patch.js';
 import groundPlane  from './ground_plane.js';
 import jpole        from './jpole.js';
+import moxon        from './moxon.js';
 
 export const ANTENNA_CONFIGS = [
   dipole, foldedDipole, monopole, yagi, invertedV, loop,
-  helix, sleeve, discone, patch, groundPlane, jpole,
+  helix, sleeve, discone, patch, groundPlane, jpole, moxon,
 ];
 
 export const ANTENNA_MAP = Object.fromEntries(
