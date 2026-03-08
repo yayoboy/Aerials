@@ -1,6 +1,7 @@
 // frontend/src/components/S11Chart.jsx
 import { useState, useRef } from 'react';
 import Plot from 'react-plotly.js';
+import Glossary from './Glossary.jsx';
 
 const BANDS = [
   { name: '160m', fMin: 1.8,   fMax: 2.0   },
@@ -190,7 +191,7 @@ export default function S11Chart({ results, loading }) {
               background: !showVswr ? '#1c2e4a' : 'transparent',
               color: !showVswr ? '#f0f6fc' : '#8b949e',
             }}
-          >S11</button>
+          ><Glossary term="S11">S11</Glossary></button>
           <button
             onClick={() => setShowVswr(true)}
             style={{
@@ -198,7 +199,7 @@ export default function S11Chart({ results, loading }) {
               background: showVswr ? '#1c2e4a' : 'transparent',
               color: showVswr ? '#f0f6fc' : '#8b949e',
             }}
-          >VSWR</button>
+          ><Glossary term="VSWR">VSWR</Glossary></button>
         </div>
 
         <button

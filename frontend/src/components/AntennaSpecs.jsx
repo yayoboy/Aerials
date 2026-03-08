@@ -1,5 +1,6 @@
 import { ANTENNA_MAP } from '../antennas/configs/index.js';
 import { MATERIALS, CROSS_SECTIONS } from '../constants/conductors.js';
+import Glossary from './Glossary.jsx';
 
 function fmt(value) {
   if (Array.isArray(value)) return value.join(', ') + ' mm';
@@ -52,7 +53,7 @@ export default function AntennaSpecs({ antennaType, params, conductor }) {
           {lambdaMm != null && (
             <div className="spec-row">
               <span className="spec-label">Lunghezza d'onda</span>
-              <span className="spec-value">λ = {lambdaMm} mm</span>
+              <span className="spec-value"><Glossary term="λ">λ</Glossary> = {lambdaMm} mm</span>
             </div>
           )}
         </div>
