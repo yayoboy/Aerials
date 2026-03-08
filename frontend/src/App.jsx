@@ -19,7 +19,11 @@ function loadHistory() {
 }
 
 function saveHistory(entries) {
-  localStorage.setItem(HISTORY_KEY, JSON.stringify(entries));
+  try {
+    localStorage.setItem(HISTORY_KEY, JSON.stringify(entries));
+  } catch {
+    // localStorage quota exceeded — silently skip persistence
+  }
 }
 
 const DEFAULT_CONDUCTOR = {
@@ -88,6 +92,7 @@ export default function App() {
   };
 
   const handleRestoreHistory = (entry) => {
+    if (loading) return;
     setAntennaType(entry.antenna_type);
     setParams(entry.params);
     setConductor(entry.conductor);
@@ -142,6 +147,7 @@ export default function App() {
           history={history}
           onRestore={handleRestoreHistory}
           onDelete={handleDeleteHistory}
+          disabled={loading}
         />
       </aside>
 

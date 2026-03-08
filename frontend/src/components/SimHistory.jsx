@@ -1,5 +1,5 @@
 // frontend/src/components/SimHistory.jsx
-export default function SimHistory({ history, onRestore, onDelete }) {
+export default function SimHistory({ history, onRestore, onDelete, disabled }) {
   if (history.length === 0) return null;
 
   return (
@@ -8,7 +8,7 @@ export default function SimHistory({ history, onRestore, onDelete }) {
       <ul className="history-list">
         {history.map(entry => (
           <li key={entry.id} className="history-item">
-            <button className="history-restore" onClick={() => onRestore(entry)}>
+            <button className="history-restore" onClick={() => onRestore(entry)} disabled={disabled}>
               <span className="history-label">{entry.label}</span>
               <span className="history-meta">
                 {entry.resonance_mhz?.toFixed(1)} MHz &nbsp;
@@ -19,6 +19,7 @@ export default function SimHistory({ history, onRestore, onDelete }) {
               className="history-delete"
               onClick={() => onDelete(entry.id)}
               title="Rimuovi"
+              disabled={disabled}
             >×</button>
           </li>
         ))}
