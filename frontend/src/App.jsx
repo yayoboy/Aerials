@@ -7,7 +7,20 @@ import ConductorForm   from './components/ConductorForm.jsx';
 import S11Chart        from './components/S11Chart.jsx';
 import Antenna3DView   from './components/Antenna3DView.jsx';
 import AntennaSpecs    from './components/AntennaSpecs.jsx';
+import SimHistory      from './components/SimHistory.jsx';
 import { ANTENNA_MAP } from './antennas/configs/index.js';
+
+const HISTORY_KEY = 'aerials_history';
+const MAX_HISTORY = 10;
+
+function loadHistory() {
+  try { return JSON.parse(localStorage.getItem(HISTORY_KEY) ?? '[]'); }
+  catch { return []; }
+}
+
+function saveHistory(entries) {
+  localStorage.setItem(HISTORY_KEY, JSON.stringify(entries));
+}
 
 const DEFAULT_CONDUCTOR = {
   material: 'copper',
@@ -22,6 +35,7 @@ export default function App() {
   const [loading,     setLoading]     = useState(false);
   const [results,     setResults]     = useState(null);
   const [error,       setError]       = useState(null);
+  const [history,     setHistory]     = useState(loadHistory);
 
   const handleAntennaChange = (type) => {
     setAntennaType(type);
@@ -48,12 +62,43 @@ export default function App() {
         setError(data.detail ?? 'Simulation failed');
       } else {
         setResults(data);
+        const s11 = data.results.s11_db;
+        const freqs = data.results.frequencies_mhz;
+        const minIdx = s11.indexOf(Math.min(...s11));
+        const label = ANTENNA_MAP[antennaType]?.label ?? antennaType;
+        const entry = {
+          id: Date.now(),
+          antenna_type: antennaType,
+          label,
+          params: { ...params },
+          conductor: { ...conductor },
+          results: data,
+          resonance_mhz: freqs[minIdx],
+          min_s11_db: s11[minIdx],
+        };
+        const updated = [entry, ...history].slice(0, MAX_HISTORY);
+        setHistory(updated);
+        saveHistory(updated);
       }
     } catch (err) {
       setError(err.message);
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleRestoreHistory = (entry) => {
+    setAntennaType(entry.antenna_type);
+    setParams(entry.params);
+    setConductor(entry.conductor);
+    setResults(entry.results);
+    setError(null);
+  };
+
+  const handleDeleteHistory = (id) => {
+    const updated = history.filter(h => h.id !== id);
+    setHistory(updated);
+    saveHistory(updated);
   };
 
   const cfg = ANTENNA_MAP[antennaType];
@@ -92,6 +137,12 @@ export default function App() {
             Errore: {error}
           </p>
         )}
+
+        <SimHistory
+          history={history}
+          onRestore={handleRestoreHistory}
+          onDelete={handleDeleteHistory}
+        />
       </aside>
 
       <main className="main-content">
