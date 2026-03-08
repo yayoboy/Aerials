@@ -5,7 +5,15 @@ export default function AntennaForm({ antennaType, params, onChange }) {
   const cfg = ANTENNA_MAP[antennaType];
   if (!cfg) return null;
 
-  const set = (name, value) => onChange({ ...params, [name]: value });
+  const set = (name, value) => {
+    const updated = { ...params, [name]: value };
+    if (name === 'frequency_mhz' && typeof cfg.derivedFromFreq === 'function') {
+      const derived = cfg.derivedFromFreq(value, params);
+      onChange({ ...updated, ...derived });
+    } else {
+      onChange(updated);
+    }
+  };
 
   return (
     <div className="antenna-form">
