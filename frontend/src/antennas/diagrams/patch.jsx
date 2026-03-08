@@ -1,4 +1,4 @@
-import { DiagramSVG, HDim, VDim, FeedDot } from './utils.js';
+import { DiagramSVG, HDim, VDim, FeedDot } from './utils.jsx';
 
 export function buildDiagram(params) {
   const { width_mm = 38, length_mm = 29, substrate_height_mm = 1.6, substrate_er = 4.4 } = params;

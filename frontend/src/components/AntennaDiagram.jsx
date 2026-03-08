@@ -1,16 +1,16 @@
-import { buildDiagram as dipoleDiagram }      from '../antennas/diagrams/dipole.js';
-import { buildDiagram as monopoleDiagram }    from '../antennas/diagrams/monopole.js';
-import { buildDiagram as foldedDiagram }      from '../antennas/diagrams/folded_dipole.js';
-import { buildDiagram as yagiDiagram }        from '../antennas/diagrams/yagi.js';
-import { buildDiagram as invertedVDiagram }   from '../antennas/diagrams/inverted_v.js';
-import { buildDiagram as loopDiagram }        from '../antennas/diagrams/loop.js';
-import { buildDiagram as helixDiagram }       from '../antennas/diagrams/helix.js';
-import { buildDiagram as sleeveDiagram }      from '../antennas/diagrams/sleeve.js';
-import { buildDiagram as disconeDiagram }     from '../antennas/diagrams/discone.js';
-import { buildDiagram as patchDiagram }       from '../antennas/diagrams/patch.js';
-import { buildDiagram as groundPlaneDiagram } from '../antennas/diagrams/ground_plane.js';
-import { buildDiagram as jpoleDiagram }       from '../antennas/diagrams/jpole.js';
-import { buildDiagram as moxonDiagram }       from '../antennas/diagrams/moxon.js';
+import { buildDiagram as dipoleDiagram }      from '../antennas/diagrams/dipole.jsx';
+import { buildDiagram as monopoleDiagram }    from '../antennas/diagrams/monopole.jsx';
+import { buildDiagram as foldedDiagram }      from '../antennas/diagrams/folded_dipole.jsx';
+import { buildDiagram as yagiDiagram }        from '../antennas/diagrams/yagi.jsx';
+import { buildDiagram as invertedVDiagram }   from '../antennas/diagrams/inverted_v.jsx';
+import { buildDiagram as loopDiagram }        from '../antennas/diagrams/loop.jsx';
+import { buildDiagram as helixDiagram }       from '../antennas/diagrams/helix.jsx';
+import { buildDiagram as sleeveDiagram }      from '../antennas/diagrams/sleeve.jsx';
+import { buildDiagram as disconeDiagram }     from '../antennas/diagrams/discone.jsx';
+import { buildDiagram as patchDiagram }       from '../antennas/diagrams/patch.jsx';
+import { buildDiagram as groundPlaneDiagram } from '../antennas/diagrams/ground_plane.jsx';
+import { buildDiagram as jpoleDiagram }       from '../antennas/diagrams/jpole.jsx';
+import { buildDiagram as moxonDiagram }       from '../antennas/diagrams/moxon.jsx';
 
 const DIAGRAM_MAP = {
   dipole:        dipoleDiagram,

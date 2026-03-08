@@ -1,4 +1,4 @@
-import { DiagramSVG, VWire, VDim, FeedDot } from './utils.js';
+import { DiagramSVG, VWire, VDim, FeedDot } from './utils.jsx';
 
 export function buildDiagram(params) {
   const { monopole_length_mm = 490, sleeve_length_mm = 245, frequency_mhz = 144 } = params;

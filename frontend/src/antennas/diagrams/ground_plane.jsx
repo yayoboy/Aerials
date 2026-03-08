@@ -1,4 +1,4 @@
-import { DiagramSVG, VWire, HDim, VDim, FeedDot } from './utils.js';
+import { DiagramSVG, VWire, HDim, VDim, FeedDot } from './utils.jsx';
 
 export function buildDiagram(params) {
   const { radial_length_mm = 490, num_radials = 4, radial_angle_deg = 45, frequency_mhz = 146 } = params;

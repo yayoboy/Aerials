@@ -1,4 +1,4 @@
-import { DiagramSVG, VDim, HDim, FeedDot } from './utils.js';
+import { DiagramSVG, VDim, HDim, FeedDot } from './utils.jsx';
 
 export function buildDiagram(params) {
   const { diameter_mm = 40, pitch_mm = 30, turns = 8, frequency_mhz = 2400 } = params;

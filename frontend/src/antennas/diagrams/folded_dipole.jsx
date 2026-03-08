@@ -1,4 +1,4 @@
-import { DiagramSVG, HWire, VWire, HDim, FeedDot } from './utils.js';
+import { DiagramSVG, HWire, VWire, HDim, FeedDot } from './utils.jsx';
 
 export function buildDiagram(params) {
   const { length_mm = 1020, frequency_mhz = 144 } = params;

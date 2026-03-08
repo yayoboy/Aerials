@@ -1,4 +1,4 @@
-import { DiagramSVG, FeedDot } from './utils.js';
+import { DiagramSVG, FeedDot } from './utils.jsx';
 
 export function buildDiagram(params) {
   const { perimeter_mm = 21400, shape = 'square', frequency_mhz = 14 } = params;

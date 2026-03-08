@@ -1,4 +1,4 @@
-import { DiagramSVG, HDim, FeedDot } from './utils.js';
+import { DiagramSVG, HDim, FeedDot } from './utils.jsx';
 
 export function buildDiagram(params) {
   const { length_mm = 20200, apex_angle_deg = 120, frequency_mhz = 7 } = params;

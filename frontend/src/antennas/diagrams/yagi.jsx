@@ -1,4 +1,4 @@
-import { DiagramSVG, HWire, VWire, HDim, VDim, FeedDot } from './utils.js';
+import { DiagramSVG, HWire, VWire, HDim, VDim, FeedDot } from './utils.jsx';
 
 export function buildDiagram(params) {
   const {

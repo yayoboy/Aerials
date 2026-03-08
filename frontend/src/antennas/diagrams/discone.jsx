@@ -1,4 +1,4 @@
-import { DiagramSVG, HDim, VDim, FeedDot } from './utils.js';
+import { DiagramSVG, HDim, VDim, FeedDot } from './utils.jsx';
 
 export function buildDiagram(params) {
   const { cone_length_mm = 185, cone_angle_deg = 60, disc_diameter_mm = 150, frequency_mhz = 400 } = params;
