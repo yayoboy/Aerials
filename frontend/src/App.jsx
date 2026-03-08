@@ -53,7 +53,7 @@ export default function App() {
     setResults(null);
     setError(null);
     try {
-      const res = await fetch(`http://localhost:8000/simulate/${antennaType}`, {
+      const res = await fetch(`/api/simulate/${antennaType}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
