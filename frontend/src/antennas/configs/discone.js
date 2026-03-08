@@ -6,7 +6,7 @@ export default {
   fields: [
     { name: 'frequency_mhz',    label: 'Frequenza (MHz)',     type: 'number', min: 1,  step: 1, max: 10000 },
     { name: 'cone_length_mm',   label: 'Lunghezza cono (mm)', type: 'number', min: 1,  step: 1, max: 925 },
-    { name: 'cone_angle_deg',   label: 'Angolo cono (°)',     type: 'number', min: 10, step: 5, max: 300 },
+    { name: 'cone_angle_deg',   label: 'Angolo cono (°)',     type: 'number', min: 10, step: 5, max: 90 },
     { name: 'disc_diameter_mm', label: 'Diametro disco (mm)', type: 'number', min: 1,  step: 1, max: 750 },
   ],
 };
