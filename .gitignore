@@ -12,7 +12,10 @@ build/
 venv/
 
 # Docker
-.dockerignore
+/.dockerignore
+
+# Node
+node_modules/
 
 # Editor
 .DS_Store

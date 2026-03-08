@@ -28,11 +28,11 @@ All browser requests go to `localhost:5173`. Requests that match `/api/*` are tr
 
 | Property     | backend                                      | frontend                                      |
 |--------------|----------------------------------------------|-----------------------------------------------|
-| Base image   | `openemshub/openems:latest`                  | `node:20-alpine`                              |
+| Base image   | `ubuntu:20.04` (openEMS compiled from source) | `node:20-alpine`                             |
 | Port         | `8000:8000`                                  | `5173:5173`                                   |
 | Volumes      | `./backend:/app` (bind mount)                | `./frontend:/app` (bind mount), `node_modules` (named volume) |
-| Command      | `uvicorn main:app --host 0.0.0.0 --port 8000 --reload` | `npm run dev -- --host 0.0.0.0`    |
-| Health check | `curl -f http://localhost:8000/health`        | none (depends on backend being healthy)       |
+| Command      | `uvicorn main:app --host 0.0.0.0 --port 8000 --reload` | `npm run dev`                      |
+| Health check | `curl -f http://localhost:8000/`             | none (depends on backend being healthy)       |
 
 ---
 
@@ -47,7 +47,7 @@ Vite's `server.proxy` configuration in `vite.config.js` rewrites requests:
 **Why this approach:**
 
 - **Avoids CORS**: the browser never makes a cross-origin request. From the browser's perspective, both the frontend and the API are on the same origin (`localhost:5173`). No `Access-Control-Allow-Origin` headers are needed.
-- **No backend changes needed**: the FastAPI app does not need to be aware of the `/api` prefix. Its routes stay as `/simulate/{antenna_type}`, `/health`, etc. The Vite proxy handles the prefix translation at the network layer.
+- **No backend changes needed**: the FastAPI app does not need to be aware of the `/api` prefix. Its routes stay as `/simulate/{antenna_type}`, `/`, etc. The Vite proxy handles the prefix translation at the network layer.
 - **Works identically in development**: developers can also run `npm run dev` outside Docker and point the proxy at `http://localhost:8000` — same rewrite logic, same backend routes.
 
 ---
@@ -66,7 +66,7 @@ The named volume is necessary because the bind mount in step 1 would otherwise o
 ## Startup Order
 
 1. **Backend starts** — Docker Compose brings up the `backend` container and begins running the FastAPI server with `uvicorn`.
-2. **Health check passes** — Docker polls `GET http://localhost:8000/health` inside the backend container at regular intervals. The backend is considered healthy once this endpoint returns HTTP 200.
+2. **Health check passes** — Docker polls `GET http://localhost:8000/` inside the backend container at regular intervals. The backend is considered healthy once this endpoint returns HTTP 200.
 3. **Frontend starts** — the `frontend` service has `depends_on: backend: condition: service_healthy`. Docker Compose does not start the Vite dev server until the backend health check has passed. This prevents the frontend from serving before the API is ready to accept requests.
 
 ---
