@@ -7,7 +7,7 @@ export function buildMoxon(params, conductor, color) {
   const C      = (params.feed_gap_mm       ??  27) * 0.001;
   const radius = Math.max((conductor?.radius_mm ?? 1) * 0.001, A * 0.008);
   const lam    = 299792.458 / ((params.frequency_mhz ?? 144) * 1000);
-  const D      = Math.max(lam * 0.001 * 0.071 - C - B * 2, 0.001);
+  const D      = Math.max(lam * 0.005, 0.001);
   const depth  = B + D + B;
 
   const mat  = new THREE.MeshStandardMaterial({ color, metalness: 0.8, roughness: 0.4 });
