@@ -78,7 +78,13 @@ def _load_simulators():
     except ImportError as e:
         print(f"[WARNING] Could not load jpole simulator: {e}", flush=True)
 
-    print(f"[INFO] Loaded {len(simulators)}/12 simulators: {list(simulators.keys())}", flush=True)
+    try:
+        from app.simulators.moxon import simulate_moxon
+        simulators["moxon"] = simulate_moxon
+    except ImportError as e:
+        print(f"[WARNING] Could not load moxon simulator: {e}", flush=True)
+
+    print(f"[INFO] Loaded {len(simulators)}/13 simulators: {list(simulators.keys())}", flush=True)
     return simulators
 
 SIMULATOR_MAP = _load_simulators()

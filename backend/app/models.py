@@ -71,6 +71,12 @@ class PatchParams(BaseModel):
     substrate_er:        float = 4.4
     substrate_height_mm: float = 1.6
 
+class MoxonParams(BaseModel):
+    frequency_mhz:     float = 144.0
+    element_length_mm: float = 990.0
+    tail_length_mm:    float = 171.0
+    feed_gap_mm:       float = 27.0
+
 class SimulationRequest(BaseModel):
     antenna_params: Dict[str, Any]
     conductor:      ConductorParams = ConductorParams()
