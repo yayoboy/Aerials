@@ -3,6 +3,10 @@ export default {
   label: 'Discone',
   description: 'Antenna discone a banda larga',
   defaultParams: { frequency_mhz: 400, cone_length_mm: 185, cone_angle_deg: 60, disc_diameter_mm: 150 },
+  derivedFromFreq(freqMhz) {
+    const lam = 299792.458 / freqMhz;
+    return { cone_length_mm: Math.round(lam / 4) };
+  },
   fields: [
     { name: 'frequency_mhz',    label: 'Frequenza (MHz)',     type: 'number', min: 1,  step: 1, max: 10000 },
     { name: 'cone_length_mm',   label: 'Lunghezza cono (mm)', type: 'number', min: 1,  step: 1, max: 925 },

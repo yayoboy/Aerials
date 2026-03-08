@@ -3,6 +3,13 @@ export default {
   label: 'Sleeve/Bazooka',
   description: 'Antenna a manica con balun integrato',
   defaultParams: { frequency_mhz: 144, monopole_length_mm: 490, sleeve_length_mm: 245 },
+  derivedFromFreq(freqMhz) {
+    const lam = 299792.458 / freqMhz;
+    return {
+      monopole_length_mm: Math.round(lam / 4),
+      sleeve_length_mm:   Math.round(lam / 8),
+    };
+  },
   fields: [
     { name: 'frequency_mhz',      label: 'Frequenza (MHz)',       type: 'number', min: 1, step: 1, max: 10000 },
     { name: 'monopole_length_mm', label: 'Lunghezza monopolo (mm)', type: 'number', min: 1, step: 1, max: 2450 },

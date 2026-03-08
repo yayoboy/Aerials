@@ -3,6 +3,10 @@ export default {
   label: 'Inverted-V',
   description: 'Dipolo a forma di V invertita',
   defaultParams: { frequency_mhz: 7, length_mm: 20200, apex_angle_deg: 120, height_mm: 15000 },
+  derivedFromFreq(freqMhz) {
+    const lam = 299792.458 / freqMhz;
+    return { length_mm: Math.round(lam / 2) };
+  },
   fields: [
     { name: 'frequency_mhz',  label: 'Frequenza (MHz)',  type: 'number', min: 1,   step: 0.1, max: 10000 },
     { name: 'length_mm',      label: 'Lunghezza (mm)',   type: 'number', min: 1,   step: 100, max: 100000 },

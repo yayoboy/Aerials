@@ -6,6 +6,13 @@ export default {
     frequency_mhz: 144, driven_length_mm: 1020, reflector_length_mm: 1050,
     director_lengths_mm: [980, 960], element_spacing_mm: 300,
   },
+  derivedFromFreq(freqMhz) {
+    const lam = 299792.458 / freqMhz;
+    return {
+      driven_length_mm:    Math.round(lam / 2),
+      reflector_length_mm: Math.round(lam / 2 * 1.05),
+    };
+  },
   fields: [
     { name: 'frequency_mhz',       label: 'Frequenza (MHz)',         type: 'number', min: 1,   step: 1, max: 10000 },
     { name: 'driven_length_mm',    label: 'Lunghezza dipolo (mm)',   type: 'number', min: 1,   step: 1, max: 5100 },
