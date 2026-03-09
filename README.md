@@ -1,6 +1,6 @@
 # Aerials
 
-A full-stack antenna simulation web app powered by openEMS FDTD — design, simulate, and visualize 12 antenna types with S11 return loss plots and interactive 3D views.
+A full-stack antenna simulation web app powered by openEMS FDTD — design, simulate, and visualize **21 antenna types** with S11 return loss plots, 2D polar diagrams and interactive 3D radiation patterns.
 
 ## Stack
 
@@ -32,6 +32,42 @@ Once running, open your browser:
 | Backend API      | http://localhost:8000        |
 | Swagger UI       | http://localhost:8000/docs   |
 
+## Supported Antenna Types
+
+| # | ID | Label | Notes |
+|---|----|-------|-------|
+| 1 | `dipole` | Dipolo λ/2 | Half-wave dipole |
+| 2 | `folded_dipole` | Dipolo Ripiegato | 300 Ω feed impedance |
+| 3 | `monopole` | Monopolo λ/4 | Quarter-wave over ground plane |
+| 4 | `yagi` | Yagi-Uda | Directional, configurable directors |
+| 5 | `inverted_v` | Inverted V | Wire dipole with apex angle |
+| 6 | `loop` | Loop | Square loop |
+| 7 | `helix` | Elica | Axial or normal mode |
+| 8 | `sleeve` | Sleeve Monopole | Coaxial sleeve variant |
+| 9 | `discone` | Discone | Wideband, VHF/UHF |
+| 10 | `patch` | Patch (Microstrip) | Substrate configurable |
+| 11 | `ground_plane` | Ground Plane | Configurable radials |
+| 12 | `jpole` | J-Pole | Omnidirectional |
+| 13 | `moxon` | Moxon | Compact directional |
+| 14 | `turnstile` | Turnstile | Two crossed dipoles, elliptical polarisation |
+| 15 | `collinear` | Array Collineare | N stacked half-wave elements, horizon gain |
+| 16 | `efhw` | EFHW | End-fed half-wave, 2450 Ω port (49:1 UNUN) |
+| 17 | `lpda` | LPDA | Log-periodic dipole array, broadband |
+| 18 | `biconical` | Biconica | Dual-cone, wideband EMC |
+| 19 | `rhombic` | Rombica | Diamond wire + 600 Ω termination, HF |
+| 20 | `cloverleaf` | Cloverleaf | 3 tilted loops, circular polarisation FPV |
+| 21 | `vivaldi` | Vivaldi (TSA) | Exponential tapered slot, UWB end-fire |
+
+## Features
+
+- **FDTD simulation** via openEMS for each antenna type
+- **S11 return loss** plot (frequency sweep ±20 % around design frequency)
+- **2D polar radiation diagram** — E-plane, H-plane, and optional azimuth cut
+- **3D radiation pattern** — interactive rotatable surface (toggle 2D/3D)
+- **Conductor selection** — Copper, Silver, Aluminium, Steel, Brass or custom; round, tube, flat or square cross-section
+- **Result caching** — LRU cache (128 entries) for instant replay of identical simulations
+- **Feed impedance awareness** — each antenna's port is normalised to its physical feed impedance (50 Ω for most; 300 Ω for folded dipole; 2450 Ω for EFHW)
+
 ## Useful Commands
 
 | Command                                  | Description                              |
@@ -61,31 +97,46 @@ aerials/
 ├── docker-compose.yml
 ├── backend/
 │   ├── Dockerfile
-│   ├── main.py                  # FastAPI app + SIMULATOR_MAP
+│   ├── main.py                  # FastAPI app + SIMULATOR_MAP (21 entries)
 │   ├── requirements.txt
-│   ├── app/
-│   │   ├── conductor.py         # ConductorMaterial, CrossSection, ConductorParams
-│   │   ├── models.py            # 12 antenna Pydantic models + SimulationRequest
-│   │   └── simulators/          # One FDTD simulator module per antenna type
-│   │       ├── dipole.py
-│   │       ├── folded_dipole.py
-│   │       ├── monopole.py
-│   │       ├── yagi.py
-│   │       ├── inverted_v.py
-│   │       ├── loop.py
-│   │       ├── helix.py
-│   │       ├── sleeve.py
-│   │       ├── discone.py
-│   │       ├── patch.py
-│   │       ├── ground_plane.py
-│   │       └── jpole.py
-│   └── tests/                   # pytest unit tests
+│   └── app/
+│       ├── conductor.py         # ConductorMaterial, CrossSection, ConductorParams
+│       ├── models.py            # 21 antenna Pydantic models + SimulationRequest
+│       ├── sim_utils.py         # Shared FDTD helpers (mesh, NrTS, NF2FF sampling)
+│       └── simulators/          # One FDTD simulator module per antenna type
+│           ├── dipole.py
+│           ├── folded_dipole.py
+│           ├── monopole.py
+│           ├── yagi.py
+│           ├── inverted_v.py
+│           ├── loop.py
+│           ├── helix.py
+│           ├── sleeve.py
+│           ├── discone.py
+│           ├── patch.py
+│           ├── ground_plane.py
+│           ├── jpole.py
+│           ├── moxon.py
+│           ├── turnstile.py
+│           ├── collinear.py
+│           ├── efhw.py
+│           ├── lpda.py
+│           ├── biconical.py
+│           ├── rhombic.py
+│           ├── cloverleaf.py
+│           └── vivaldi.py
 └── frontend/
     ├── src/
     │   ├── App.jsx              # Root component, wires all pieces together
-    │   ├── components/          # AntennaSelector, AntennaForm, ConductorForm, S11Chart, Antenna3DView
+    │   ├── components/
+    │   │   ├── AntennaSelector.jsx
+    │   │   ├── AntennaForm.jsx
+    │   │   ├── ConductorForm.jsx
+    │   │   ├── S11Chart.jsx
+    │   │   ├── Antenna3DView.jsx
+    │   │   └── RadiationChart.jsx  # 2D polar + 3D surface (toggle)
     │   ├── antennas/
-    │   │   ├── configs/         # Per-antenna config (id, label, defaultParams, fields)
+    │   │   ├── configs/         # Per-antenna config (id, label, defaultParams, fields, derivedFromFreq)
     │   │   └── geometries/      # Three.js buildX() functions per antenna
     │   └── constants/
     │       └── conductors.js    # MATERIALS, CROSS_SECTIONS
@@ -97,7 +148,7 @@ aerials/
 1. **Create the simulator** at `backend/app/simulators/<name>.py`:
 
    ```python
-   def simulate_<name>(params: dict, conductor) -> dict:
+   def simulate_<name>(params: dict, conductor, with_radiation=False) -> dict:
        # Run openEMS FDTD simulation
        return {
            "antenna_type": "<name>",
@@ -109,20 +160,26 @@ aerials/
        }
    ```
 
-2. **Register the model** in `backend/app/models.py` — add a Pydantic model for your antenna's parameters and include it in `SimulationRequest`.
-
-3. **Register the simulator** in `backend/main.py` — add an entry to `SIMULATOR_MAP`:
+2. **Add a Pydantic model** in `backend/app/models.py`:
 
    ```python
-   SIMULATOR_MAP = {
-       ...
-       "<name>": ("app.simulators.<name>", "simulate_<name>"),
-   }
+   class <Name>Params(BaseModel):
+       frequency_mhz: float = 300.0
+       # ... antenna-specific parameters
    ```
 
-4. **Add frontend config** at `frontend/src/antennas/configs/<name>.js` with `id`, `label`, `defaultParams`, and `fields`.
+3. **Register the simulator** in `backend/main.py` inside `_load_simulators()`:
 
-5. **Add 3D geometry** at `frontend/src/antennas/geometries/<name>.js` exporting a `build<Name>(params)` function that returns a `THREE.Group`.
+   ```python
+   from app.simulators.<name> import simulate_<name>
+   simulators["<name>"] = simulate_<name>
+   ```
+
+4. **Add frontend config** at `frontend/src/antennas/configs/<name>.js` exporting an object with `id`, `label`, `description`, `defaultParams`, `derivedFromFreq()` and `fields`.
+
+5. **Add 3D geometry** at `frontend/src/antennas/geometries/<name>.js` exporting `build<Name>(params, conductor, color)` returning a `THREE.Group`.
+
+6. **Register both** in `frontend/src/antennas/configs/index.js` and `frontend/src/antennas/geometries/index.js`.
 
 ### Running Backend Tests
 
@@ -134,9 +191,19 @@ docker compose exec backend python -m pytest tests/ -v
 
 | Method | Endpoint                        | Description                                  |
 |--------|---------------------------------|----------------------------------------------|
-| GET    | `/`                             | Health check — returns `{"status": "ok"}`    |
+| GET    | `/`                             | Health check + list of loaded simulators     |
 | POST   | `/simulate/{antenna_type}`      | Run FDTD simulation for the specified antenna |
+| GET    | `/cache`                        | Cache statistics (size, hit rate)            |
+| POST   | `/cache/clear`                  | Flush the simulation result cache            |
 
-**Supported `antenna_type` values:** `dipole`, `folded_dipole`, `monopole`, `yagi`, `inverted_v`, `loop`, `helix`, `sleeve`, `discone`, `patch`, `ground_plane`, `jpole`
+**Request body** (`POST /simulate/{antenna_type}`):
 
-Full interactive API documentation (including request/response schemas and a try-it-out console) is available at **http://localhost:8000/docs** when the stack is running.
+```json
+{
+  "antenna_params": { "frequency_mhz": 144, "arm_length_mm": 510 },
+  "conductor": { "material": "copper", "cross_section": "round", "radius_mm": 1.0 },
+  "with_radiation": false
+}
+```
+
+Full interactive API documentation is available at **http://localhost:8000/docs** when the stack is running.
