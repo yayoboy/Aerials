@@ -77,6 +77,47 @@ class MoxonParams(BaseModel):
     tail_length_mm:    float = 171.0
     feed_gap_mm:       float = 27.0
 
+class TurnstileParams(BaseModel):
+    frequency_mhz: float = 144.0
+    arm_length_mm: float = 510.0   # half-length of each dipole (centre → tip)
+
+class CollinearParams(BaseModel):
+    frequency_mhz:      float = 146.0
+    element_length_mm:  float = 1026.0  # λ/2 per element
+    num_elements:       int   = 4
+
+class EFHWParams(BaseModel):
+    frequency_mhz:    float = 14.0
+    length_mm:        float = 10100.0   # λ/2 with ~0.94 velocity factor
+    counterpoise_mm:  float = 1070.0    # λ/20 counterpoise / RF-return stub
+
+class LPDAParams(BaseModel):
+    frequency_mhz: float = 150.0
+    tau:           float = 0.90   # geometric scaling ratio (0.8 – 0.97)
+    sigma:         float = 0.15   # relative element spacing (0.05 – 0.25)
+    num_elements:  int   = 6
+
+class BiconicalParams(BaseModel):
+    frequency_mhz:  float = 300.0
+    cone_length_mm: float = 250.0   # ≈ λ/4 at design frequency
+    cone_angle_deg: float = 60.0    # half-angle from cone axis
+
+class RhombicParams(BaseModel):
+    frequency_mhz:  float = 14.0
+    leg_length_mm:  float = 20000.0  # length of each of the 4 legs
+    apex_angle_deg: float = 60.0     # full acute apex angle
+
+class CloverleafParams(BaseModel):
+    frequency_mhz:   float = 5800.0
+    loop_diameter_mm: float = 16.5   # ≈ λ/π at 5.8 GHz
+    tilt_deg:         float = 40.0   # petal tilt from vertical axis
+
+class VivaldiParams(BaseModel):
+    frequency_mhz:      float = 2400.0
+    length_mm:          float = 80.0
+    aperture_width_mm:  float = 60.0
+    slot_width_mm:      float = 3.0
+
 class SimulationRequest(BaseModel):
     antenna_params:  Dict[str, Any]
     conductor:       ConductorParams = ConductorParams()

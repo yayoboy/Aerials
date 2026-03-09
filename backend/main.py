@@ -108,7 +108,55 @@ def _load_simulators():
     except ImportError as e:
         logger.warning(f"Could not load moxon simulator: {e}")
 
-    logger.info(f"Loaded {len(simulators)}/13 simulators: {list(simulators.keys())}")
+    try:
+        from app.simulators.turnstile import simulate_turnstile
+        simulators["turnstile"] = simulate_turnstile
+    except ImportError as e:
+        logger.warning(f"Could not load turnstile simulator: {e}")
+
+    try:
+        from app.simulators.collinear import simulate_collinear
+        simulators["collinear"] = simulate_collinear
+    except ImportError as e:
+        logger.warning(f"Could not load collinear simulator: {e}")
+
+    try:
+        from app.simulators.efhw import simulate_efhw
+        simulators["efhw"] = simulate_efhw
+    except ImportError as e:
+        logger.warning(f"Could not load efhw simulator: {e}")
+
+    try:
+        from app.simulators.lpda import simulate_lpda
+        simulators["lpda"] = simulate_lpda
+    except ImportError as e:
+        logger.warning(f"Could not load lpda simulator: {e}")
+
+    try:
+        from app.simulators.biconical import simulate_biconical
+        simulators["biconical"] = simulate_biconical
+    except ImportError as e:
+        logger.warning(f"Could not load biconical simulator: {e}")
+
+    try:
+        from app.simulators.rhombic import simulate_rhombic
+        simulators["rhombic"] = simulate_rhombic
+    except ImportError as e:
+        logger.warning(f"Could not load rhombic simulator: {e}")
+
+    try:
+        from app.simulators.cloverleaf import simulate_cloverleaf
+        simulators["cloverleaf"] = simulate_cloverleaf
+    except ImportError as e:
+        logger.warning(f"Could not load cloverleaf simulator: {e}")
+
+    try:
+        from app.simulators.vivaldi import simulate_vivaldi
+        simulators["vivaldi"] = simulate_vivaldi
+    except ImportError as e:
+        logger.warning(f"Could not load vivaldi simulator: {e}")
+
+    logger.info(f"Loaded {len(simulators)}/21 simulators: {list(simulators.keys())}")
     return simulators
 
 

@@ -11,6 +11,14 @@ import { buildPatch }       from './patch.js';
 import { buildGroundPlane } from './ground_plane.js';
 import { buildJPole }       from './jpole.js';
 import { buildMoxon }       from './moxon.js';
+import { buildTurnstile }   from './turnstile.js';
+import { buildCollinear }   from './collinear.js';
+import { buildEFHW }        from './efhw.js';
+import { buildLPDA }        from './lpda.js';
+import { buildBiconical }   from './biconical.js';
+import { buildRhombic }     from './rhombic.js';
+import { buildCloverleaf }  from './cloverleaf.js';
+import { buildVivaldi }     from './vivaldi.js';
 
 export const GEOMETRY_BUILDERS = {
   dipole:        buildDipole,
@@ -26,4 +34,12 @@ export const GEOMETRY_BUILDERS = {
   ground_plane:  buildGroundPlane,
   jpole:         buildJPole,
   moxon:         buildMoxon,
+  turnstile:     buildTurnstile,
+  collinear:     buildCollinear,
+  efhw:          buildEFHW,
+  lpda:          buildLPDA,
+  biconical:     buildBiconical,
+  rhombic:       buildRhombic,
+  cloverleaf:    buildCloverleaf,
+  vivaldi:       buildVivaldi,
 };
