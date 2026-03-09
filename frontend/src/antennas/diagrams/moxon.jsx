@@ -12,7 +12,8 @@ export function buildDiagram(params) {
   const B = tail_length_mm * scaleV;
   const C = Math.max(feed_gap_mm * scaleH, 6);
   const Ds = D * scaleV;
-  const depth = B + Ds + B;
+  const DsVis = Math.max(Ds, 15);
+  const depth = B + DsVis + B;
 
   const cx = 260, topY = 35;
   const gap = C / 2;
@@ -29,7 +30,7 @@ export function buildDiagram(params) {
       <FeedDot x={cx} y={topY} />
       <HDim x1={cx - A/2} x2={cx + A/2} y={topY - 18} label={`A = ${element_length_mm} mm`} />
       <VDim x={cx + A/2 + 22} y1={topY} y2={topY + B} label={`B = ${tail_length_mm} mm`} left={false} />
-      <VDim x={cx - A/2 - 22} y1={topY + B} y2={topY + B + Ds} label={`D = ${Math.round(D)} mm`} />
+      <VDim x={cx - A/2 - 22} y1={topY + B} y2={topY + B + DsVis} label={`D = ${Math.round(D)} mm`} />
       <HDim x1={cx - gap} x2={cx + gap} y={topY + 18} label={`C = ${feed_gap_mm} mm`} above={false} />
     </DiagramSVG>
   );

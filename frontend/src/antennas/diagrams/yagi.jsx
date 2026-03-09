@@ -40,7 +40,7 @@ export function buildDiagram(params) {
             ) : (
               <HWire x1={cx - half} x2={cx + half} y={r.y} />
             )}
-            <text x={cx + half + 8} y={r.y + 4} fill="#8b949e" fontSize="10">{r.label}</text>
+            <text x={cx - half - 8} y={r.y + 4} fill="#8b949e" fontSize="10" textAnchor="end">{r.label}</text>
           </g>
         );
       })}

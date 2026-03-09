@@ -1,3 +1,4 @@
+import { useState, useRef, useCallback } from 'react';
 import { buildDiagram as dipoleDiagram }      from '../antennas/diagrams/dipole.jsx';
 import { buildDiagram as monopoleDiagram }    from '../antennas/diagrams/monopole.jsx';
 import { buildDiagram as foldedDiagram }      from '../antennas/diagrams/folded_dipole.jsx';
@@ -28,12 +29,40 @@ const DIAGRAM_MAP = {
   moxon:         moxonDiagram,
 };
 
+const MIN_ZOOM = 0.5;
+const MAX_ZOOM = 4;
+
 export default function AntennaDiagram({ antennaType, params }) {
+  const [zoom, setZoom] = useState(1);
+  const containerRef = useRef(null);
+
   const fn = DIAGRAM_MAP[antennaType];
   if (!fn) return null;
+
+  const handleWheel = useCallback((e) => {
+    e.preventDefault();
+    const delta = e.deltaY > 0 ? -0.1 : 0.1;
+    setZoom(z => Math.min(MAX_ZOOM, Math.max(MIN_ZOOM, +(z + delta).toFixed(2))));
+  }, []);
+
+  const resetZoom = () => setZoom(1);
+
   return (
-    <div style={{ width: '100%', height: '220px' }}>
-      {fn(params)}
+    <div className="diagram-zoom-wrapper" style={{ height: '100%' }}>
+      <div className="diagram-zoom-controls">
+        <button className="zoom-btn" onClick={() => setZoom(z => Math.min(MAX_ZOOM, +(z + 0.25).toFixed(2)))}>+</button>
+        <button className="zoom-btn zoom-reset" onClick={resetZoom}>{Math.round(zoom * 100)}%</button>
+        <button className="zoom-btn" onClick={() => setZoom(z => Math.max(MIN_ZOOM, +(z - 0.25).toFixed(2)))}></button>
+      </div>
+      <div
+        ref={containerRef}
+        className="diagram-scroll-area"
+        onWheel={handleWheel}
+      >
+        <div style={{ transform: `scale(${zoom})`, transformOrigin: 'top center', transition: 'transform 0.15s ease', width: '100%', height: '100%' }}>
+          {fn(params)}
+        </div>
+      </div>
     </div>
   );
 }

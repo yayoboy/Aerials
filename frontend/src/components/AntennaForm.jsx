@@ -1,8 +1,13 @@
 // frontend/src/components/AntennaForm.jsx
+import { useState, useEffect } from 'react';
 import { ANTENNA_MAP } from '../antennas/configs/index.js';
 
 export default function AntennaForm({ antennaType, params, onChange }) {
   const cfg = ANTENNA_MAP[antennaType];
+  const [drafts, setDrafts] = useState({});
+
+  useEffect(() => { setDrafts({}); }, [antennaType]);
+
   if (!cfg) return null;
 
   const clampToField = (key, val) => {
@@ -23,6 +28,17 @@ export default function AntennaForm({ antennaType, params, onChange }) {
     } else {
       onChange(updated);
     }
+  };
+
+  const commitNumber = (name, rawValue) => {
+    setDrafts(d => { const nd = { ...d }; delete nd[name]; return nd; });
+    if (rawValue === '' || rawValue == null) return;
+    const v = parseFloat(rawValue);
+    if (isNaN(v)) return;
+    const field = cfg.fields.find(f => f.name === name);
+    const lo = field?.min, hi = field?.max;
+    const clamped = lo != null && v < lo ? lo : hi != null && v > hi ? hi : v;
+    set(name, clamped);
   };
 
   return (
@@ -55,16 +71,10 @@ export default function AntennaForm({ antennaType, params, onChange }) {
                 min={field.min}
                 max={field.max}
                 step={field.step}
-                value={params[field.name] ?? ''}
-                onChange={e => {
-                  if (e.target.value === '') { set(field.name, ''); return; }
-                  const v = parseFloat(e.target.value);
-                  if (isNaN(v)) return;
-                  const lo = field.min;
-                  const hi = field.max;
-                  const clamped = lo != null && v < lo ? lo : hi != null && v > hi ? hi : v;
-                  set(field.name, clamped);
-                }}
+                value={field.name in drafts ? drafts[field.name] : (params[field.name] ?? '')}
+                onChange={e => setDrafts(d => ({ ...d, [field.name]: e.target.value }))}
+                onBlur={e => commitNumber(field.name, e.target.value)}
+                onKeyDown={e => { if (e.key === 'Enter') commitNumber(field.name, e.target.value); }}
               />
             </div>
           ) : (

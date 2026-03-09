@@ -11,4 +11,10 @@ export const GLOSSARY = {
   'Return Loss': 'Perdita di ritorno = −S11 in dB. Più alto = meglio.',
   resonance:    'Frequenza di risonanza — dove S11 è minimo e l\'antenna trasferisce il massimo di potenza.',
   εr:           'Permittività relativa del substrato dielettrico (patch antenna). FR4 ≈ 4.4.',
+  gain:         'Guadagno — rapporto tra la potenza irradiata in una direzione e quella di un\'antenna isotropa. In dBi.',
+  dBi:          'Decibel rispetto ad un\'antenna isotropa ideale. Misura il guadagno direzionale.',
+  impedance:    'Impedenza di ingresso — rapporto tensione/corrente al feed point. Ideale: 50 Ω per coassiale standard.',
+  bandwidth:    'Larghezza di banda — intervallo di frequenze dove S11 < −10 dB (VSWR < 2:1).',
+  PML:          'Perfectly Matched Layer — strato assorbente ai bordi della griglia FDTD che simula lo spazio libero infinito.',
+  NrTS:         'Numero di timestep — quanti passi temporali esegue la simulazione FDTD prima di fermarsi.',
 };

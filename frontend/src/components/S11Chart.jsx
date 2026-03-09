@@ -4,18 +4,25 @@ import Plot from 'react-plotly.js';
 import Glossary from './Glossary.jsx';
 
 const BANDS = [
-  { name: '160m', fMin: 1.8,   fMax: 2.0   },
-  { name: '80m',  fMin: 3.5,   fMax: 3.8   },
-  { name: '40m',  fMin: 7.0,   fMax: 7.2   },
-  { name: '30m',  fMin: 10.1,  fMax: 10.15 },
-  { name: '20m',  fMin: 14.0,  fMax: 14.35 },
-  { name: '17m',  fMin: 18.068,fMax: 18.168},
-  { name: '15m',  fMin: 21.0,  fMax: 21.45 },
-  { name: '12m',  fMin: 24.89, fMax: 24.99 },
-  { name: '10m',  fMin: 28.0,  fMax: 29.7  },
-  { name: '6m',   fMin: 50.0,  fMax: 52.0  },
-  { name: '2m',   fMin: 144.0, fMax: 146.0 },
-  { name: '70cm', fMin: 430.0, fMax: 440.0 },
+  { name: '160m',   fMin: 1.8,    fMax: 2.0    },
+  { name: '80m',    fMin: 3.5,    fMax: 3.8    },
+  { name: '40m',    fMin: 7.0,    fMax: 7.2    },
+  { name: '30m',    fMin: 10.1,   fMax: 10.15  },
+  { name: '20m',    fMin: 14.0,   fMax: 14.35  },
+  { name: '17m',    fMin: 18.068, fMax: 18.168 },
+  { name: '15m',    fMin: 21.0,   fMax: 21.45  },
+  { name: '12m',    fMin: 24.89,  fMax: 24.99  },
+  { name: 'CB',     fMin: 26.965, fMax: 27.405 },
+  { name: '10m',    fMin: 28.0,   fMax: 29.7   },
+  { name: '6m',     fMin: 50.0,   fMax: 52.0   },
+  { name: 'FM',     fMin: 87.5,   fMax: 108.0  },
+  { name: 'Aeron.', fMin: 118.0,  fMax: 137.0  },
+  { name: '2m',     fMin: 144.0,  fMax: 146.0  },
+  { name: 'Marine', fMin: 156.0,  fMax: 174.0  },
+  { name: '70cm',   fMin: 430.0,  fMax: 440.0  },
+  { name: 'PMR446', fMin: 446.0,  fMax: 446.2  },
+  { name: '23cm',   fMin: 1240.0, fMax: 1300.0 },
+  { name: '2.4G',   fMin: 2400.0, fMax: 2500.0 },
 ];
 
 function computeVswr(s11Db) {
@@ -57,13 +64,19 @@ export default function S11Chart({ results, loading }) {
     });
   };
 
-  if (loading) return <div className="spinner" />;
+  if (loading) return (
+    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%' }}>
+      <div className="spinner" />
+    </div>
+  );
 
   if (!results?.results) {
     return (
-      <p style={{ color: 'var(--text-secondary)' }}>
-        Configura i parametri e avvia la simulazione.
-      </p>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%' }}>
+        <p style={{ color: 'var(--text-secondary)' }}>
+          Configura i parametri e avvia la simulazione.
+        </p>
+      </div>
     );
   }
 
@@ -87,7 +100,7 @@ export default function S11Chart({ results, loading }) {
         xref: 'x', yref: 'paper',
         x0: Math.max(b.fMin, fMin), x1: Math.min(b.fMax, fMax),
         y0: 0, y1: 1,
-        fillcolor: 'rgba(255,193,7,0.08)',
+        fillcolor: 'rgba(255,193,7,0.13)',
         line: { width: 0 },
         layer: 'below',
       }))
@@ -100,7 +113,7 @@ export default function S11Chart({ results, loading }) {
         y: 0.98,
         text: b.name,
         showarrow: false,
-        font: { size: 9, color: 'rgba(255,193,7,0.5)' },
+        font: { size: 9, color: 'rgba(255,193,7,0.75)' },
         textangle: -90,
         xanchor: 'center', yanchor: 'top',
       }))

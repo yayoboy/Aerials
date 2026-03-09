@@ -1,3 +1,36 @@
+/* ── Panel tabs ─────────────────────────────────────────────────────────── */
+.panel-tabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 12px;
+  border-bottom: 1px solid var(--panel-border);
+  padding-bottom: 8px;
+}
+
+.panel-tab {
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-size: 0.82rem;
+  font-weight: 500;
+  padding: 5px 14px;
+  transition: background 0.15s, color 0.15s;
+  font-family: 'Inter', sans-serif;
+}
+
+.panel-tab:hover {
+  color: var(--text-primary);
+  background: rgba(255,255,255,0.05);
+}
+
+.panel-tab.active {
+  background: rgba(47,129,247,0.15);
+  color: var(--accent-color);
+  border-color: rgba(47,129,247,0.3);
+}
+
 /* ── Antenna selector grid ──────────────────────────────────────────────── */
 .antenna-selector {
   display: grid;
@@ -229,4 +262,83 @@
 }
 .glossary-term:hover::after {
   display: block;
+}
+
+/* ── Glossary Panel ──────────────────────────────────────────────────────── */
+.glossary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 10px;
+}
+
+.glossary-entry {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 10px 12px;
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--panel-border);
+  border-radius: 8px;
+}
+
+.glossary-entry-term {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--accent-color);
+  font-family: 'Inter', monospace;
+}
+
+.glossary-entry-def {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  line-height: 1.45;
+}
+
+/* ── Diagram zoom ────────────────────────────────────────────────────────── */
+.diagram-zoom-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+  min-height: 0;
+}
+
+.diagram-zoom-controls {
+  display: flex;
+  gap: 4px;
+  justify-content: flex-end;
+}
+
+.zoom-btn {
+  background: rgba(0,0,0,0.3);
+  border: 1px solid var(--panel-border);
+  border-radius: 6px;
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  padding: 3px 10px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+  font-family: 'Inter', sans-serif;
+}
+
+.zoom-btn:hover {
+  background: var(--accent-color);
+  color: #fff;
+  border-color: var(--accent-color);
+}
+
+.zoom-reset {
+  min-width: 48px;
+}
+
+.diagram-scroll-area {
+  overflow: auto;
+  cursor: grab;
+  border-radius: 8px;
+  background: rgba(0,0,0,0.1);
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
 }

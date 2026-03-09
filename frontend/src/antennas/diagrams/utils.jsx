@@ -76,7 +76,7 @@ export function FeedDot({ x, y, label = 'feed' }) {
 // SVG wrapper with dark background
 export function DiagramSVG({ children }) {
   return (
-    <svg viewBox={`0 0 ${VW} ${VH}`} style={{ width: '100%', height: '100%', maxHeight: '220px' }}>
+    <svg viewBox={`0 0 ${VW} ${VH}`} style={{ width: '100%', height: '100%', minHeight: '220px', display: 'block' }} preserveAspectRatio="xMidYMid meet" overflow="visible">
       <rect width={VW} height={VH} fill="transparent" />
       {children}
     </svg>

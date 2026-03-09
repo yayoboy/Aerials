@@ -78,5 +78,6 @@ class MoxonParams(BaseModel):
     feed_gap_mm:       float = 27.0
 
 class SimulationRequest(BaseModel):
-    antenna_params: Dict[str, Any]
-    conductor:      ConductorParams = ConductorParams()
+    antenna_params:  Dict[str, Any]
+    conductor:       ConductorParams = ConductorParams()
+    with_radiation:  bool = False

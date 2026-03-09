@@ -9,6 +9,9 @@ import Antenna3DView   from './components/Antenna3DView.jsx';
 import AntennaSpecs    from './components/AntennaSpecs.jsx';
 import SimHistory      from './components/SimHistory.jsx';
 import AntennaDiagram  from './components/AntennaDiagram.jsx';
+import GlossaryPanel   from './components/GlossaryPanel.jsx';
+import Glossary        from './components/Glossary.jsx';
+import RadiationChart  from './components/RadiationChart.jsx';
 import { ANTENNA_MAP } from './antennas/configs/index.js';
 
 const HISTORY_KEY = 'aerials_history';
@@ -41,6 +44,7 @@ export default function App() {
   const [results,     setResults]     = useState(null);
   const [error,       setError]       = useState(null);
   const [history,     setHistory]     = useState(loadHistory);
+  const [activeTab,   setActiveTab]   = useState('3d');
 
   const handleAntennaChange = (type) => {
     setAntennaType(type);
@@ -54,7 +58,7 @@ export default function App() {
     setResults(null);
     setError(null);
     const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 120_000);
+    const timeout = setTimeout(() => controller.abort(), 360_000);
     try {
       const res = await fetch(`/api/simulate/${antennaType}`, {
         method: 'POST',
@@ -62,6 +66,7 @@ export default function App() {
         body: JSON.stringify({
           antenna_params: params,
           conductor,
+          with_radiation: true,
         }),
         signal: controller.signal,
       });
@@ -162,26 +167,42 @@ export default function App() {
 
       <main className="main-content">
         <div className="glass-panel panel-3d">
-          <h2 className="panel-header">
-            Vista 3D — {cfg?.label ?? antennaType}
-          </h2>
-          <div className="plot-container" style={{ height: '340px' }}>
-            <Antenna3DView
-              antennaType={antennaType}
-              params={params}
-              conductor={conductor}
-            />
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0' }}>
+            <h2 className="panel-header" style={{ marginBottom: 0, borderBottom: 'none', paddingBottom: 0 }}>
+              {activeTab === '3d' ? `Vista 3D — ${cfg?.label ?? antennaType}` : `Irradiazione — ${cfg?.label ?? antennaType}`}
+            </h2>
+            <div className="panel-tabs" style={{ marginBottom: 0, borderBottom: 'none', paddingBottom: 0 }}>
+              <button className={`panel-tab${activeTab === '3d' ? ' active' : ''}`} onClick={() => setActiveTab('3d')}>Vista 3D</button>
+              <button className={`panel-tab${activeTab === 'radiation' ? ' active' : ''}`} onClick={() => setActiveTab('radiation')}>Irradiazione</button>
+            </div>
           </div>
-          <AntennaSpecs
-            antennaType={antennaType}
-            params={params}
-            conductor={conductor}
-          />
+          <div style={{ height: '1px', background: 'var(--panel-border)', margin: '10px 0 14px' }} />
+
+          {activeTab === '3d' ? (
+            <>
+              <div className="plot-container" style={{ height: '300px' }}>
+                <Antenna3DView
+                  antennaType={antennaType}
+                  params={params}
+                  conductor={conductor}
+                />
+              </div>
+              <AntennaSpecs
+                antennaType={antennaType}
+                params={params}
+                conductor={conductor}
+              />
+            </>
+          ) : (
+            <div style={{ flex: 1, minHeight: 0 }}>
+              <RadiationChart results={results} loading={loading} />
+            </div>
+          )}
         </div>
 
         <div className="glass-panel panel-chart">
-          <h2 className="panel-header">S11 Return Loss</h2>
-          <div className="plot-container">
+          <h2 className="panel-header"><Glossary term="S11">S11</Glossary> Return Loss</h2>
+          <div style={{ flex: 1, minHeight: 0 }}>
             <S11Chart results={results} loading={loading} />
           </div>
         </div>
@@ -190,10 +211,12 @@ export default function App() {
           <h2 className="panel-header">
             Diagramma costruttivo — {cfg?.label ?? antennaType}
           </h2>
-          <div className="plot-container" style={{ height: '220px' }}>
+          <div style={{ flex: 1, minHeight: 0 }}>
             <AntennaDiagram antennaType={antennaType} params={params} />
           </div>
         </div>
+
+        <GlossaryPanel />
       </main>
     </div>
   );

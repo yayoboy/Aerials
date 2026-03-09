@@ -26,3 +26,11 @@ node_modules/
 
 # Playwright
 .playwright-mcp/
+
+# Logs & debug output
+*.log
+*.png
+
+# Test/benchmark output
+test_output.json
+benchmark_results_all.json
