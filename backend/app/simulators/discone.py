@@ -3,10 +3,14 @@
 Discone antenna simulator with optimized FDTD parameters.
 
 Optimizations applied:
-- Dynamic mesh resolution based on frequency
+- Coarse mesh resolution (λ/6.5) - conical structure has cylindrical symmetry
 - Reduced NrTS (80,000 vs 300,000)
-- Optimized NF2FF sampling (19x37 vs 37x73)
+- Optimized NF2FF sampling (13x25=325 vs 37x73=2701)
 - Skip XML export when not needed
+
+Performance targets:
+- Standard discone: <6s
+- ΔS11: <0.5 dB vs legacy
 """
 import os
 import shutil
@@ -40,8 +44,9 @@ def simulate_discone(
 
     f0 = p.frequency_mhz * 1e6
 
-    # Optimized: Dynamic mesh resolution based on frequency
-    res = get_dynamic_mesh_resolution(f0)
+    # Optimized: Coarse mesh for discone (conical structure, cylindrical symmetry)
+    # λ/6.5 reduces VHF mesh cells ~25% vs default λ/8, targeting <6s at VHF
+    res = get_dynamic_mesh_resolution(f0, lambda_divisor=6.5)
 
     # Optimized: Reduced NrTS with EndCriteria (discone is complex)
     nrts = get_optimized_nrts(f0, "discone", with_radiation)

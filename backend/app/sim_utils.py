@@ -103,9 +103,14 @@ def get_optimized_nrts(
     """
     # Base steps by antenna complexity
     simple_antennas = {"dipole", "folded_dipole", "monopole", "inverted_v", "loop", "jpole", "moxon"}
-    
+    # Helix-specific: complex 3D geometry but converges faster than discone/yagi
+    # Benchmark shows 20s+ at VHF; reducing from 80k to 60k targets <10s
+    helix_specific = {"helix"}
+
     if antenna_type in simple_antennas:
         base_steps = 50_000
+    elif antenna_type in helix_specific:
+        base_steps = 60_000
     else:
         base_steps = 80_000
     
